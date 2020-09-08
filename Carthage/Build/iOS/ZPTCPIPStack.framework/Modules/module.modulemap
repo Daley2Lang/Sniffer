@@ -1,0 +1,6 @@
+framework module ZPTCPIPStack {
+  umbrella header "ZPTCPIPStack.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,19 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "c828897fe0e186fc15406268c55ae46fb68eeb67",
+  "iOS" : [
+    {
+      "name" : "ZPTCPIPStack",
+      "hash" : "6f550a261266c121bbd058280de198f112081f2bb3055c534baa3d2b341c0658",
+      "linking" : "dynamic"
+    }
+  ]
+}

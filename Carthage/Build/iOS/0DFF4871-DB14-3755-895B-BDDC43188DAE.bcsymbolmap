@@ -1,0 +1,639 @@
+BCSymbolMap Version: 2.0
+_pbuf_header_impl
+_pbuf_free_ooseq.cold.1
+_pbuf_alloc.cold.1
+_pbuf_alloc.cold.2
+_pbuf_alloc.cold.3
+_pbuf_alloc.cold.4
+_pbuf_alloc.cold.5
+_pbuf_alloc.cold.6
+_pbuf_free.cold.1
+_pbuf_free.cold.2
+_pbuf_free.cold.3
+_pbuf_realloc.cold.1
+_pbuf_realloc.cold.2
+_pbuf_realloc.cold.3
+_pbuf_realloc.cold.4
+_pbuf_header_impl.cold.1
+_pbuf_header_impl.cold.2
+_pbuf_header_impl.cold.3
+_pbuf_ref.cold.1
+_pbuf_cat.cold.1
+_pbuf_cat.cold.2
+_pbuf_dechain.cold.1
+_pbuf_dechain.cold.2
+_pbuf_copy.cold.1
+_pbuf_copy.cold.2
+_pbuf_copy.cold.3
+_pbuf_copy.cold.4
+_pbuf_copy.cold.5
+_pbuf_copy.cold.6
+_pbuf_copy_partial.cold.1
+_pbuf_copy_partial.cold.2
+_pbuf_take.cold.1
+_pbuf_take.cold.2
+_pbuf_take.cold.3
+_pbuf_take.cold.4
+_pbuf_take.cold.5
+Apple clang version 11.0.0 (clang-1100.0.33.16)
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/pbuf.c
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack
+pbuf_take
+ZPTCPIPStack/lwIP/core/pbuf.c
+pbuf_copy_partial
+pbuf_copy
+pbuf_dechain
+pbuf_cat
+pbuf_ref
+pbuf_header_impl
+pbuf_realloc
+pbuf_free
+pbuf_alloc
+pbuf_free_ooseq
+pbuf_strstr
+pbuf_memfind
+pbuf_memcmp
+pbuf_get_at
+pbuf_try_get_at
+pbuf_skip_const
+pbuf_put_at
+pbuf_skip
+pbuf_coalesce
+pbuf_take_at
+pbuf_chain
+pbuf_clen
+pbuf_header_force
+pbuf_header
+pbuf_pool_is_empty
+_nd6_find_neighbor_cache_entry
+_nd6_send_q
+_nd6_send_na
+_nd6_new_neighbor_cache_entry
+_nd6_send_rs
+_nd6_find_destination_cache_entry
+_nd6_free_neighbor_cache_entry
+_nd6_send_ns
+_nd6_select_router
+_nd6_free_q
+_nd6_free_q.cold.1
+_nd6_free_q.cold.2
+_nd6_free_q.cold.3
+_nd6_ra_buffer
+_nd6_cached_destination_index
+_nd6_cached_neighbor_index
+_multicast_address
+_nd6_select_router.last_router
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv6/nd6.c
+nd6_free_q
+ZPTCPIPStack/lwIP/core/ipv6/nd6.c
+nd6_adjust_mld_membership
+nd6_cleanup_netif
+nd6_reachability_hint
+nd6_get_destination_mtu
+nd6_get_next_hop_addr_or_queue
+nd6_queue_packet
+nd6_get_next_hop_entry
+nd6_send_neighbor_cache_probe
+nd6_is_prefix_in_netif
+nd6_new_destination_cache_entry
+nd6_select_router
+nd6_find_route
+nd6_clear_destination_cache
+nd6_send_ns
+nd6_free_neighbor_cache_entry
+nd6_tmr
+nd6_find_destination_cache_entry
+nd6_send_rs
+nd6_new_neighbor_cache_entry
+nd6_send_na
+nd6_send_q
+nd6_find_neighbor_cache_entry
+nd6_input
+nd6_new_onlink_prefix
+nd6_get_onlink_prefix
+nd6_new_router
+nd6_get_router
+_ip4_output_if_src.cold.1
+_ip4_output_if_src.cold.2
+_ip4_output.cold.1
+_ip_id
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv4/ip4.c
+ip4_output
+ZPTCPIPStack/lwIP/core/ipv4/ip4.c
+ip4_output_if_src
+ip4_output_if
+ip4_input
+ip4_route
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv4/igmp.c
+_ip4addr_aton.cold.1
+_ip4addr_ntoa.str
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv4/ip4_addr.c
+ip4addr_aton
+ZPTCPIPStack/lwIP/core/ipv4/ip4_addr.c
+ip4addr_ntoa_r
+ip4addr_ntoa
+ipaddr_addr
+ip4_addr_netmask_valid
+ip4_addr_isbroadcast_u32
+_ip_reass_free_complete_datagram
+_ip_reass_remove_oldest_datagram
+_ip_reass_dequeue_datagram
+_ip_reass_free_complete_datagram.cold.1
+_ip_reass_free_complete_datagram.cold.2
+_ip_reass_free_complete_datagram.cold.3
+_ip_reass_free_complete_datagram.cold.4
+_ip4_reass.cold.1
+_ip4_reass.cold.2
+_ip_reass_dequeue_datagram.cold.1
+_reassdatagrams
+_ip_reass_pbufcount
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv4/ip4_frag.c
+ip_reass_dequeue_datagram
+ZPTCPIPStack/lwIP/core/ipv4/ip4_frag.c
+ip4_reass
+ip_reass_chain_frag_into_datagram_and_validate
+ip_reass_free_complete_datagram
+ip_reass_remove_oldest_datagram
+ip_reass_enqueue_new_datagram
+ip_reass_tmr
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/udp.c
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/stats.c
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/def.c
+lwip_itoa
+ZPTCPIPStack/lwIP/core/def.c
+lwip_strnicmp
+lwip_stricmp
+lwip_strnstr
+lwip_htonl
+lwip_htons
+_do_memp_malloc_pool
+_do_memp_free_pool
+_memp_malloc_pool.cold.1
+_do_memp_malloc_pool.cold.1
+_memp_malloc.cold.1
+_memp_free_pool.cold.1
+_do_memp_free_pool.cold.1
+_memp_free.cold.1
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/memp.c
+memp_free
+ZPTCPIPStack/lwIP/core/memp.c
+do_memp_free_pool
+memp_free_pool
+memp_malloc
+do_memp_malloc_pool
+memp_malloc_pool
+memp_init
+memp_init_pool
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/timeouts.c
+tcp_timer_needed
+ZPTCPIPStack/lwIP/core/timeouts.c
+_ip6_reass_free_complete_datagram
+_ip6_reass_remove_oldest_datagram
+_ip6_reass_free_complete_datagram.cold.1
+_ip6_reass_free_complete_datagram.cold.2
+_ip6_reass_free_complete_datagram.cold.3
+_ip6_reass.cold.1
+_ip6_reass.cold.2
+_ip6_reass.cold.3
+_ip6_reass_pbufcount
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv6/ip6_frag.c
+ip6_reass
+ZPTCPIPStack/lwIP/core/ipv6/ip6_frag.c
+ip6_reass_free_complete_datagram
+ip6_reass_remove_oldest_datagram
+ip6_reass_tmr
+_netif_null_output_ip6
+_netif_add.cold.1
+_netif_ip6_addr_set.cold.1
+_netif_ip6_addr_set_parts.cold.1
+_netif_ip6_addr_set_parts.cold.2
+_netif_ip6_addr_set_state.cold.1
+_netif_ip6_addr_set_state.cold.2
+_netif_num
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/netif.c
+netif_ip6_addr_set_state
+ZPTCPIPStack/lwIP/core/netif.c
+netif_ip6_addr_set_parts
+netif_ip6_addr_set
+netif_add
+netif_add_ip6_address
+netif_create_ip6_linklocal_address
+netif_get_ip6_addr_match
+netif_issue_reports
+netif_set_link_down
+netif_set_link_up
+netif_set_up
+netif_find
+netif_set_default
+netif_set_down
+netif_remove
+netif_set_gw
+netif_set_netmask
+netif_set_ipaddr
+netif_set_addr
+netif_null_output_ip6
+netif_input
+netif_init
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv4/dhcp.c
+_ip6addr_ntoa.str
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv6/ip6_addr.c
+ip6addr_ntoa_r
+ZPTCPIPStack/lwIP/core/ipv6/ip6_addr.c
+ip6addr_ntoa
+ip6addr_aton
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv4/autoip.c
+_icmp6_send_response
+_icmp6_send_response.cold.1
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv6/icmp6.c
+icmp6_send_response
+ZPTCPIPStack/lwIP/core/ipv6/icmp6.c
+icmp6_param_problem
+icmp6_time_exceeded
+icmp6_packet_too_big
+icmp6_dest_unreach
+icmp6_input
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/sys.c
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv6/dhcp6.c
+___zp_tcp_sent_block_invoke
+___copy_helper_block_e4_20s
+___destroy_helper_block_e4_20s
+___zp_tcp_recv_block_invoke
+___zp_tcp_recv_block_invoke.25
+___copy_helper_block_e4_20s24s
+___destroy_helper_block_e4_20s24s
+___zp_tcp_err_block_invoke
++[ZPTCPConnection newTCPConnectionWith:identifie:ipData:tcpInfo:pbuf:]
+-[ZPTCPConnection initWithTunnel:identifie:ipData:tcpInfo:pbuf:]
+___64-[ZPTCPConnection initWithTunnel:identifie:ipData:tcpInfo:pbuf:]_block_invoke
+-[ZPTCPConnection configSrcAddr:srcPort:destAddr:destPort:]
+-[ZPTCPConnection tcpInputWith:tcpInfo:pbuf:]
+___45-[ZPTCPConnection tcpInputWith:tcpInfo:pbuf:]_block_invoke
+-[ZPTCPConnection syncSetDelegate:delegateQueue:]
+___49-[ZPTCPConnection syncSetDelegate:delegateQueue:]_block_invoke
+___copy_helper_block_e4_20s24s28s32r
+___destroy_helper_block_e4_20s24s28s32r
+-[ZPTCPConnection asyncSetDelegate:delegateQueue:]
+___50-[ZPTCPConnection asyncSetDelegate:delegateQueue:]_block_invoke
+___copy_helper_block_e4_20s24s28s
+___destroy_helper_block_e4_20s24s28s
+-[ZPTCPConnection write:]
+___25-[ZPTCPConnection write:]_block_invoke
+___25-[ZPTCPConnection write:]_block_invoke_2
+-[ZPTCPConnection readData]
+___27-[ZPTCPConnection readData]_block_invoke
+-[ZPTCPConnection close]
+___24-[ZPTCPConnection close]_block_invoke
+-[ZPTCPConnection closeAfterWriting]
+___36-[ZPTCPConnection closeAfterWriting]_block_invoke
+-[ZPTCPConnection delegateQueue]
+-[ZPTCPConnection srcAddr]
+-[ZPTCPConnection destAddr]
+-[ZPTCPConnection srcPort]
+-[ZPTCPConnection destPort]
+-[ZPTCPConnection delegate]
+-[ZPTCPConnection setDelegate:]
+-[ZPTCPConnection identifie]
+-[ZPTCPConnection setIdentifie:]
+-[ZPTCPConnection tunnel]
+-[ZPTCPConnection setTunnel:]
+-[ZPTCPConnection block]
+-[ZPTCPConnection setBlock:]
+-[ZPTCPConnection timer]
+-[ZPTCPConnection setTimer:]
+-[ZPTCPConnection timerQueue]
+-[ZPTCPConnection setTimerQueue:]
+-[ZPTCPConnection canReadData]
+-[ZPTCPConnection setCanReadData:]
+-[ZPTCPConnection .cxx_destruct]
+_zp_tcp_sent.cold.1
+_zp_tcp_sent.cold.2
+_zp_tcp_recv.cold.1
+_zp_tcp_recv.cold.2
+_zp_tcp_recv.cold.3
+_zp_tcp_connected.cold.1
+_zp_tcp_err.cold.1
+_IsOnTimerQueueKey
+___block_descriptor_30_e4_20s_e5_v4?0l
+___block_descriptor_24_e4_20s_e5_v4?0l
+___block_descriptor_28_e4_20s24s_e5_v4?0l
+___block_descriptor_112_e4_20s_e5_v4?0l
+___block_descriptor_36_e4_20s24s28s32r_e5_v4?0l
+___block_descriptor_32_e4_20s24s28s_e5_v4?0l
+_OBJC_IVAR_$_ZPTCPConnection.tcp_block
+_OBJC_IVAR_$_ZPTCPConnection._canReadData
+_OBJC_IVAR_$_ZPTCPConnection._srcPort
+_OBJC_IVAR_$_ZPTCPConnection._destPort
+_OBJC_IVAR_$_ZPTCPConnection._delegateQueue
+_OBJC_IVAR_$_ZPTCPConnection._srcAddr
+_OBJC_IVAR_$_ZPTCPConnection._destAddr
+_OBJC_IVAR_$_ZPTCPConnection._delegate
+_OBJC_IVAR_$_ZPTCPConnection._identifie
+_OBJC_IVAR_$_ZPTCPConnection._tunnel
+_OBJC_IVAR_$_ZPTCPConnection._block
+_OBJC_IVAR_$_ZPTCPConnection._timer
+_OBJC_IVAR_$_ZPTCPConnection._timerQueue
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/ZPTCPConnection.m
+zp_tcp_err
+ZPTCPIPStack/ZPTCPConnection.m
+zp_tcp_connected
+zp_tcp_recv
+zp_tcp_sent
+ZPTCPIPStack/ZPTCPConnectionEx.h
+ZPTCPIPStack/ZPTCPConnection.h
+__36-[ZPTCPConnection closeAfterWriting]_block_invoke
+__24-[ZPTCPConnection close]_block_invoke
+__27-[ZPTCPConnection readData]_block_invoke
+__25-[ZPTCPConnection write:]_block_invoke_2
+__25-[ZPTCPConnection write:]_block_invoke
+__destroy_helper_block_e4_20s24s28s
+__copy_helper_block_e4_20s24s28s
+__50-[ZPTCPConnection asyncSetDelegate:delegateQueue:]_block_invoke
+__destroy_helper_block_e4_20s24s28s32r
+__copy_helper_block_e4_20s24s28s32r
+__49-[ZPTCPConnection syncSetDelegate:delegateQueue:]_block_invoke
+__45-[ZPTCPConnection tcpInputWith:tcpInfo:pbuf:]_block_invoke
+__64-[ZPTCPConnection initWithTunnel:identifie:ipData:tcpInfo:pbuf:]_block_invoke
+__zp_tcp_err_block_invoke
+zp_tcp_poll
+__destroy_helper_block_e4_20s24s
+__copy_helper_block_e4_20s24s
+__zp_tcp_recv_block_invoke.25
+__zp_tcp_recv_block_invoke
+__destroy_helper_block_e4_20s
+__copy_helper_block_e4_20s
+__zp_tcp_sent_block_invoke
+_tcp_receive
+_tcp_oos_insert_segment
+_tcp_input.cold.1
+_tcp_input.cold.2
+_tcp_input.cold.3
+_tcp_input.cold.4
+_tcp_receive.cold.1
+_tcp_receive.cold.2
+_tcp_receive.cold.3
+_tcp_receive.cold.4
+_tcp_receive.cold.5
+_tcp_receive.cold.6
+_tcp_receive.cold.7
+_tcp_receive.cold.8
+_tcp_receive.cold.9
+_tcp_receive.cold.10
+_tcp_receive.cold.11
+_tcp_receive.cold.12
+_tcp_receive.cold.13
+_tcp_receive.cold.14
+_tcp_receive.cold.15
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/tcp_in.c
+tcp_receive
+ZPTCPIPStack/lwIP/core/tcp_in.c
+tcp_input
+tcp_process
+tcp_oos_insert_segment
+tcp_trigger_input_pcb_close
+tcp_parseopt
+tcp_getoptbyte
+tcp_timewait_input
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv6/inet6.c
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv6/ethip6.c
+_tcp_close_shutdown
+_tcp_close_shutdown_fin
+_tcp_close_shutdown.cold.1
+_tcp_abandon.cold.1
+_tcp_pcb_remove.cold.1
+_tcp_pcb_remove.cold.2
+_tcp_pcb_remove.cold.3
+_tcp_update_rcv_ann_wnd.cold.1
+_tcp_recved.cold.1
+_tcp_recved.cold.2
+_tcp_close_shutdown_fin.cold.1
+_tcp_recv_null.cold.1
+_tcp_recv.cold.1
+_tcp_sent.cold.1
+_tcp_err.cold.1
+_tcp_poll.cold.1
+_tcp_netif_ip_addr_changed.cold.1
+_tcp_persist_backoff
+_tcp_backoff
+_tcp_next_iss.iss
+_tcp_state_str
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/tcp.c
+tcp_netif_ip_addr_changed
+ZPTCPIPStack/lwIP/core/tcp.c
+tcp_poll
+tcp_err
+tcp_sent
+tcp_recv
+tcp_recv_null
+tcp_close_shutdown_fin
+tcp_recved
+tcp_update_rcv_ann_wnd
+tcp_pcb_remove
+tcp_abandon
+tcp_close_shutdown
+tcp_debug_state_str
+tcp_eff_send_mss_impl
+tcp_next_iss
+tcp_accept
+tcp_arg
+tcp_new_ip_type
+tcp_new
+tcp_alloc
+tcp_seg_copy
+tcp_setprio
+tcp_seg_free
+tcp_txnow
+tcp_process_refused_data
+tcp_pcb_purge
+tcp_segs_free
+tcp_abort
+tcp_shutdown
+tcp_close
+tcp_slowtmr
+tcp_fasttmr
+tcp_tmr
+tcp_init
+_mem_malloc.cold.1
+_mem_free.cold.1
+_mem_free.cold.2
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/mem.c
+mem_free
+ZPTCPIPStack/lwIP/core/mem.c
+mem_malloc
+mem_calloc
+mem_trim
+mem_init
+_tcp_pbuf_prealloc
+_tcp_create_segment
+_tcp_output_alloc_header
+_tcp_enqueue_flags.cold.1
+_tcp_enqueue_flags.cold.2
+_tcp_enqueue_flags.cold.3
+_tcp_enqueue_flags.cold.4
+_tcp_enqueue_flags.cold.5
+_tcp_write.cold.1
+_tcp_write.cold.2
+_tcp_write.cold.3
+_tcp_write.cold.4
+_tcp_write.cold.5
+_tcp_write.cold.6
+_tcp_write.cold.7
+_tcp_write.cold.8
+_tcp_write.cold.9
+_tcp_write.cold.10
+_tcp_write.cold.11
+_tcp_write.cold.12
+_tcp_write.cold.13
+_tcp_write.cold.14
+_tcp_write.cold.15
+_tcp_pbuf_prealloc.cold.1
+_tcp_create_segment.cold.1
+_tcp_output_alloc_header.cold.1
+_tcp_output.cold.1
+_tcp_output.cold.2
+_tcp_rst.cold.1
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/tcp_out.c
+tcp_rst
+ZPTCPIPStack/lwIP/core/tcp_out.c
+tcp_output
+tcp_output_alloc_header
+tcp_create_segment
+tcp_pbuf_prealloc
+tcp_write
+tcp_write_checks
+tcp_enqueue_flags
+tcp_zero_window_probe
+tcp_keepalive
+tcp_rexmit_fast
+tcp_rexmit
+tcp_rexmit_rto
+tcp_output_segment
+tcp_send_empty_ack
+tcp_send_fin
+_inet_cksum_pseudo_base
+_inet_cksum_pseudo_partial_base
+_inet_cksum_pseudo_partial_base.cold.1
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/inet_chksum.c
+inet_cksum_pseudo_partial_base
+ZPTCPIPStack/lwIP/core/inet_chksum.c
+inet_chksum_pbuf
+inet_chksum
+ip_chksum_pseudo_partial
+inet_chksum_pseudo_partial
+ip6_chksum_pseudo_partial
+llvm.loop.isvectorized
+ip_chksum_pseudo
+inet_chksum_pseudo
+ip6_chksum_pseudo
+inet_cksum_pseudo_base
+lwip_standard_chksum
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv4/etharp.c
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ip.c
+ip_input
+ZPTCPIPStack/lwIP/core/ip.c
+ipaddr_aton
++[ZPPacketTunnel shared]
+___24+[ZPPacketTunnel shared]_block_invoke
+___copy_helper_block_e4_
+___destroy_helper_block_e4_
+-[ZPPacketTunnel init]
+-[ZPPacketTunnel setDelegate:delegateQueue:]
+-[ZPPacketTunnel mtu:output:]
+-[ZPPacketTunnel ipv4SettingWithAddress:netmask:]
+-[ZPPacketTunnel ipPacketInput:]
+-[ZPPacketTunnel tcpConnectionEstablished:]
+___43-[ZPPacketTunnel tcpConnectionEstablished:]_block_invoke
+-[ZPPacketTunnel connectionForKey:]
+___Block_byref_object_copy_
+___Block_byref_object_dispose_
+___35-[ZPPacketTunnel connectionForKey:]_block_invoke
+___copy_helper_block_e4_20s24s28r
+___destroy_helper_block_e4_20s24s28r
+-[ZPPacketTunnel setConnection:forKey:]
+___39-[ZPPacketTunnel setConnection:forKey:]_block_invoke
+-[ZPPacketTunnel removeConnectionForKey:]
+___41-[ZPPacketTunnel removeConnectionForKey:]_block_invoke
+-[ZPPacketTunnel delegateQueue]
+-[ZPPacketTunnel delegate]
+-[ZPPacketTunnel setDelegate:]
+-[ZPPacketTunnel output]
+-[ZPPacketTunnel setOutput:]
+-[ZPPacketTunnel dic]
+-[ZPPacketTunnel setDic:]
+-[ZPPacketTunnel dicQueue]
+-[ZPPacketTunnel setDicQueue:]
+-[ZPPacketTunnel netif]
+-[ZPPacketTunnel setNetif:]
+-[ZPPacketTunnel .cxx_destruct]
+_netif_output.cold.1
+_tcp_input_pre.cold.1
+_tcp_input_pre.cold.2
+_tcp_input_pre.cold.3
+_tcp_input_pre.cold.4
+_tcp_input_pre.cold.5
+_tcp_input_pre.cold.6
+_tcp_input_pre.cold.7
+_shared.once
+_shared.shared
+___block_descriptor_24_e4__e5_v4?0l
+___block_descriptor_32_e4_20s24s28r_e5_v4?0l
+_OBJC_IVAR_$_ZPPacketTunnel._delegateQueue
+_OBJC_IVAR_$_ZPPacketTunnel._delegate
+_OBJC_IVAR_$_ZPPacketTunnel._output
+_OBJC_IVAR_$_ZPPacketTunnel._dic
+_OBJC_IVAR_$_ZPPacketTunnel._dicQueue
+_OBJC_IVAR_$_ZPPacketTunnel._netif
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/ZPPacketTunnel.m
+tcp_input_pre
+ZPTCPIPStack/ZPPacketTunnel.m
+netif_output
+ZPTCPIPStack/ZPPacketTunnelEx.h
+ZPTCPIPStack/ZPPacketTunnel.h
+__41-[ZPPacketTunnel removeConnectionForKey:]_block_invoke
+__39-[ZPPacketTunnel setConnection:forKey:]_block_invoke
+__destroy_helper_block_e4_20s24s28r
+__copy_helper_block_e4_20s24s28r
+__35-[ZPPacketTunnel connectionForKey:]_block_invoke
+__Block_byref_object_dispose_
+__Block_byref_object_copy_
+__43-[ZPPacketTunnel tcpConnectionEstablished:]_block_invoke
+__destroy_helper_block_e4_
+__copy_helper_block_e4_
+__24+[ZPPacketTunnel shared]_block_invoke
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS13.2.sdk/usr/include/dispatch/once.h
+netif_output_ip6
+netif_output_ip4
+zp_debug_log
+_ip6_output_if_src.cold.1
+_ip6_output_if_src.cold.2
+_ip6_output.cold.1
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv6/ip6.c
+ip6_output
+ZPTCPIPStack/lwIP/core/ipv6/ip6.c
+ip6_output_if_src
+ip6_options_add_hbh_ra
+ip6_output_if
+ip6_input
+ip6_select_source_address
+ip6_route
+_mld6_delayed_report
+_mld6_send
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv6/mld6.c
+mld6_tmr
+ZPTCPIPStack/lwIP/core/ipv6/mld6.c
+mld6_leavegroup_netif
+mld6_remove_group
+mld6_leavegroup
+mld6_send
+mld6_joingroup_netif
+mld6_new_group
+mld6_joingroup
+mld6_input
+mld6_lookfor_group
+mld6_delayed_report
+mld6_report_groups
+mld6_stop
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/ipv4/icmp.c
+/Users/qiliu/Desktop/小悟科技/加速VPN/新方向/Sniffer/Carthage/Checkouts/ZPTCPIPStack/ZPTCPIPStack/lwIP/core/init.c
+lwip_init
+ZPTCPIPStack/lwIP/core/init.c
+/Users/qiliu/Library/Caches/org.carthage.CarthageKit/DerivedData/11.3_11C29/ZPTCPIPStack/c828897fe0e186fc15406268c55ae46fb68eeb67/Build/Intermediates.noindex/ArchiveIntermediates/ZPTCPIPStack/IntermediateBuildFilesPath/ZPTCPIPStack.build/Release-iphoneos/ZPTCPIPStack.build/DerivedSources/ZPTCPIPStack_vers.c
