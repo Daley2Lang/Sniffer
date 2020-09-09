@@ -15,6 +15,7 @@
 
 static void *IsOnTimerQueueKey = &IsOnTimerQueueKey; /* key to identify the queue */
 
+//发送数据
 err_t zp_tcp_sent(void *arg, struct tcp_pcb *tpcb, u16_t len)
 {
     ZPTCPConnection *conn = (__bridge ZPTCPConnection *)(arg);
@@ -29,6 +30,7 @@ err_t zp_tcp_sent(void *arg, struct tcp_pcb *tpcb, u16_t len)
     return ERR_OK;
 }
 
+//接受数据
 err_t zp_tcp_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
 {
     ZPTCPConnection *conn = (__bridge ZPTCPConnection *)(arg);
@@ -71,6 +73,7 @@ err_t zp_tcp_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
     }
 }
 
+//连接成功
 err_t zp_tcp_connected(void *arg, struct tcp_pcb *tpcb, err_t err)
 {
     ZPTCPConnection *conn = (__bridge ZPTCPConnection *)(arg);
@@ -79,12 +82,12 @@ err_t zp_tcp_connected(void *arg, struct tcp_pcb *tpcb, err_t err)
     [conn.tunnel tcpConnectionEstablished:conn];
     return ERR_OK;
 }
-
+//轮询
 err_t zp_tcp_poll(void *arg, struct tcp_pcb *tpcb)
 {
     return ERR_OK;
 }
-
+//错误处理
 void zp_tcp_err(void *arg, err_t err)
 {
     ZPTCPConnection *conn = (__bridge ZPTCPConnection *)(arg);

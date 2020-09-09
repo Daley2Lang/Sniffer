@@ -17,7 +17,7 @@
 }
 
 /**
- recommend set it use sync func, because that way can known whether tcp_pcb has already been aborted
+ 建议使用sync func设置它，因为这样可以知道tcp_pcb是否已被中止
  */
 @property (nonatomic, weak) id<ZPTCPConnectionDelegate> delegate;
 
@@ -35,7 +35,7 @@
  tcp block pointer for tcp block instance, convenience for c func
  tcp块实例的tcp块指针，方便使用c func
  */
-@property (nonatomic, assign) struct zp_tcp_block *block;
+@property (nonatomic, assign) struct zp_tcp_block *block; //将所有tcp堆栈全局信息存储到lwIP的tcp堆栈中涉及的所有功能的结构
 
 /**
  timer source mainly to call tcp_tmr() func at 0.25s interval
@@ -73,7 +73,7 @@
              destPort:(UInt16)destPort;
 
 /**
- called by active tcp connection, this func will manage pbuf's memory
+ 通过活动tcp连接调用，此函数将管理pbuf的内存
  */
 - (void)tcpInputWith:(struct ip_globals)ipdata
              tcpInfo:(struct tcp_info)info

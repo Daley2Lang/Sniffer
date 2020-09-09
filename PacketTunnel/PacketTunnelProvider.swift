@@ -38,13 +38,14 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         proxySettings.httpServer = NEProxyServer(address: host, port: Int(port))
         proxySettings.httpsServer = NEProxyServer(address: host, port: Int(port))
         proxySettings.autoProxyConfigurationEnabled = false
-        //        proxySettings.httpEnabled = true
-        //        proxySettings.httpsEnabled = true
+//                proxySettings.httpEnabled = true
+//                proxySettings.httpsEnabled = true
         proxySettings.excludeSimpleHostnames = true
         proxySettings.exceptionList = ["192.168.0.0/16","10.0.0.0/8","172.16.0.0/12","127.0.0.1","localhost", "*.local"]
         settings.proxySettings = proxySettings
         /* ipv4 settings */
-        let ipv4Settings: NEIPv4Settings = NEIPv4Settings(addresses: ["192.168.0.2"],subnetMasks: ["255.255.255.255"])
+//        let ipv4Settings: NEIPv4Settings = NEIPv4Settings(addresses: ["127.0.0.1"],subnetMasks: ["255.255.255.255"])
+         let ipv4Settings: NEIPv4Settings = NEIPv4Settings(addresses: ["192.168.0.2"],subnetMasks: ["255.255.255.255"])
         ipv4Settings.includedRoutes = [NEIPv4Route.default()]//即vpn tunnel需要拦截包的地址，如果全部拦截则设置[NEIPv4Route defaultRoute]，也可以指定部分需要拦截的地址
         ipv4Settings.excludedRoutes = [
             NEIPv4Route(destinationAddress: "192.168.0.0", subnetMask: "255.255.0.0"),
@@ -71,23 +72,23 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             if err == nil {
                 NSLog("wuplyer ----  readPacket")
                 
-                if #available(iOSApplicationExtension 10.0, *) {
-                    self.packetFlow.readPacketObjects { packeArray in
-                        for (index, packe) in packeArray.enumerated() {
-                            
-                            //                                            NSLog("获取的数据来自\(String(describing: data.metadata?.sourceAppSigningIdentifier))")
-                            //                                            data.metadata?.sourceAppSigningIdentifier
-                            //                                            data.protocolFamily
-                            
-                            packe.data
-                            packe.protocolFamily
-                            
-                            
-                        }
-                    }
-                } else {
-                    
-                }
+//                if #available(iOSApplicationExtension 10.0, *) {
+//                    self.packetFlow.readPacketObjects { packeArray in
+//                        for (index, packe) in packeArray.enumerated() {
+//                            
+//                            //                                            NSLog("获取的数据来自\(String(describing: data.metadata?.sourceAppSigningIdentifier))")
+//                            //                                            data.metadata?.sourceAppSigningIdentifier
+//                            //                                            data.protocolFamily
+//                            
+//                            packe.data
+//                            packe.protocolFamily
+//                            
+//                            
+//                        }
+//                    }
+//                } else {
+//                    
+//                }
                 
                 self.packetFlow.readPackets() { datas, nums in
                     

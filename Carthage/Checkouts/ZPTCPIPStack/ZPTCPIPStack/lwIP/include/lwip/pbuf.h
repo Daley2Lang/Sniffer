@@ -138,12 +138,14 @@ typedef enum {
 /** indicates this pbuf includes a TCP FIN flag */
 #define PBUF_FLAG_TCP_FIN   0x20U
 
-/** Main packet buffer struct */
+/**主包缓冲区结构体 */
 struct pbuf {
   /** next pbuf in singly linked pbuf chain */
+    /**单链pbuf链中的下一个pbuf */
   struct pbuf *next;
 
   /** pointer to the actual data in the buffer */
+  /**指向缓冲区中实际数据的指针*/
   void *payload;
 
   /**
@@ -153,12 +155,23 @@ struct pbuf {
    * For non-queue packet chains this is the invariant:
    * p->tot_len == p->len + (p->next? p->next->tot_len: 0)
    */
+    
+      /**
+    *此缓冲区和链中所有下一个缓冲区的总长度
+    *属于同一包。
+    *
+    *对于非队列数据包链，这是不变的：
+    * p-> tot_len == p-> len +（p-> next？p-> next-> tot_len：0）
+    */
   u16_t tot_len;
 
   /** length of this buffer */
+       /**此缓冲区的长度*/
+
   u16_t len;
 
   /** pbuf_type as u8_t instead of enum to save space */
+    /** pbuf_type为u8_t而不是enum以节省空间*/
   u8_t /*pbuf_type*/ type;
 
   /** misc flags */
@@ -168,6 +181,9 @@ struct pbuf {
    * the reference count always equals the number of pointers
    * that refer to this pbuf. This can be pointers from an application,
    * the stack itself, or pbuf->next pointers from a chain.
+    *参考计数始终等于指针的数量
+    *指此pbuf。 这可以是来自应用程序的指针，
+    *堆栈本身，或链中的pbuf-> next指针。
    */
   u16_t ref;
 };

@@ -33,7 +33,7 @@ TCP连接dic的操作的串行队列：设置，获取和删除。用于线程�
 @property (nonatomic, strong) dispatch_queue_t dicQueue;
 
 /**
- lwIP的网络接口
+ lwIP的网络接口 包含数据处理的一切配置
  */
 @property (nonatomic, assign) struct netif netif;
 

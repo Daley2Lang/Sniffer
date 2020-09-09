@@ -314,7 +314,6 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
     
 //    zpi
     
-    
     NSLog(@"wuplyer ----  数据输入 ipPacketInput");
     NSAssert(data.length <= _netif.mtu, @"error in data length or mtu value");
     
@@ -336,7 +335,6 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
 // MARK: - Misc
 - (void)tcpConnectionEstablished:(ZPTCPConnection *)conn
 {
-    
     NSAssert(_delegateQueue, @"Not set delegate queue");
     dispatch_async(_delegateQueue, ^{
         if (_delegate) {
