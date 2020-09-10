@@ -385,7 +385,7 @@ return_noroute:
  
  */
 err_t
-ip4_input(struct pbuf *p, struct netif *inp)
+ip4_input(struct pbuf *p, struct netif *inp)  //处理ipv4 数据的入口
 {
   struct ip_hdr *iphdr;
   struct netif *netif;
@@ -701,7 +701,7 @@ ip4_input(struct pbuf *p, struct netif *inp)
 #if LWIP_TCP
     case IP_PROTO_TCP:
       MIB2_STATS_INC(mib2.ipindelivers);
-      tcp_input_pre(p, inp); /* ==ZP== */
+      tcp_input_pre(p, inp); /* ==ZP== */     //最终将值输入到此函数
       break;
 #endif /* LWIP_TCP */
 #if LWIP_ICMP

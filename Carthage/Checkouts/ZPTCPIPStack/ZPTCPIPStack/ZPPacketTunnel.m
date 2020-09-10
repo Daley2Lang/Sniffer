@@ -49,9 +49,12 @@ err_t netif_output_ip6(struct netif *netif, struct pbuf *p, const ip6_addr_t *ip
     return netif_output(p, FALSE);
 }
 
+// tcp输入预处理，检查并获取tcp数据包头中的信息。
 void
 tcp_input_pre(struct pbuf *p, struct netif *inp)
 {
+    NSLog(@"wuplyer ----  调用:tcp_input_pre");
+    
     u8_t hdrlen_bytes;
     
     LWIP_UNUSED_ARG(inp);
@@ -79,7 +82,7 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
         return;
     }
     
-    /* Don't even process incoming broadcasts/multicasts. */
+    /*甚至不处理传入的广播/多播。 */
     if (ip_addr_isbroadcast(ip_current_dest_addr(), ip_current_netif()) ||
         ip_addr_ismulticast(ip_current_dest_addr())) {
         TCP_STATS_INC(tcp.proterr);
@@ -92,7 +95,7 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
     
 #if CHECKSUM_CHECK_TCP
     IF__NETIF_CHECKSUM_ENABLED(inp, NETIF_CHECKSUM_CHECK_TCP) {
-        /* Verify TCP checksum. */
+        /*验证TCP校验和。 */
         u16_t chksum = ip_chksum_pseudo(p, IP_PROTO_TCP, p->tot_len,
                                         ip_current_src_addr(), ip_current_dest_addr());
         if (chksum != 0) {
@@ -109,7 +112,7 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
     }
 #endif /* CHECKSUM_CHECK_TCP */
     
-    /* sanity-check header length */
+    /* 完整性检查标头长度 */
     hdrlen_bytes = TCPH_HDRLEN(tcphdr) * 4;
     if ((hdrlen_bytes < TCP_HLEN) || (hdrlen_bytes > p->tot_len)) {
         LWIP_DEBUGF(TCP_INPUT_DEBUG, ("tcp_input: invalid header length (%"U16_F")\n", (u16_t)hdrlen_bytes));
@@ -121,35 +124,35 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
         return;
     }
     
-    /* Move the payload pointer in the pbuf so that it points to the
-     TCP data instead of the TCP header. */
+    /* 将有效载荷指针移动到pbuf中，使其指向
+     TCP数据而不是TCP标头。 */
     u16_t tcphdr_optlen = hdrlen_bytes - TCP_HLEN;
     u8_t* tcphdr_opt2 = NULL;
     u16_t tcphdr_opt1len;
     if (p->len >= hdrlen_bytes) {
-        /* all options are in the first pbuf */
+        /* 所有选项都在第一个pbuf中 */
         tcphdr_opt1len = tcphdr_optlen;
         pbuf_header(p, -(s16_t)hdrlen_bytes); /* cannot fail */
     } else {
         u16_t opt2len;
-        /* TCP header fits into first pbuf, options don't - data is in the next pbuf */
-        /* there must be a next pbuf, due to hdrlen_bytes sanity check above */
+        /* TCP标头适合第一个pbuf，选项不适合-数据位于下一个pbuf */
+        /*由于上面的hdrlen_bytes完整性检查，因此必须有下一个pbuf */
         LWIP_ASSERT("p->next != NULL", p->next != NULL);
         
-        /* advance over the TCP header (cannot fail) */
+        /* 在TCP标头上前进（不能失败） */
         pbuf_header(p, -TCP_HLEN);
         
-        /* determine how long the first and second parts of the options are */
+        /* 确定选项的第一部分和第二部分多长时间 */
         tcphdr_opt1len = p->len;
         opt2len = tcphdr_optlen - tcphdr_opt1len;
         
-        /* options continue in the next pbuf: set p to zero length and hide the
-         options in the next pbuf (adjusting p->tot_len) */
+        /* 选项在下一个pbuf中继续：将p设置为零长度并隐藏
+         下一个pbuf中的选项（调整p-> tot_len） */
         pbuf_header(p, -(s16_t)tcphdr_opt1len);
         
-        /* check that the options fit in the second pbuf */
+        /* 检查选项是否适合第二个pbuf */
         if (opt2len > p->next->len) {
-            /* drop short packets */
+            /* 丢弃短数据包 */
             LWIP_DEBUGF(TCP_INPUT_DEBUG, ("tcp_input: options overflow second pbuf (%"U16_F" bytes)\n", p->next->len));
             TCP_STATS_INC(tcp.lenerr);
             
@@ -159,11 +162,11 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
             return;
         }
         
-        /* remember the pointer to the second part of the options */
+        /* 记住指向选项第二部分的指针 */
         tcphdr_opt2 = (u8_t*)p->next->payload;
         
-        /* advance p->next to point after the options, and manually
-         adjust p->tot_len to keep it consistent with the changed p->next */
+        /* 前进p-> next指向选项后的位置，然后手动
+         调整p-> tot_len使其与更改的p-> next保持一致 */
         pbuf_header(p->next, -(s16_t)opt2len);
         p->tot_len -= opt2len;
         
@@ -171,7 +174,7 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
         LWIP_ASSERT("p->tot_len == p->next->tot_len", p->tot_len == p->next->tot_len);
     }
     
-    /* Convert fields in TCP header to host byte order. */
+    /* 将TCP标头中的字段转换为主机字节顺序。 */
     tcphdr->src = lwip_ntohs(tcphdr->src);
     tcphdr->dest = lwip_ntohs(tcphdr->dest);
     u32_t seqno = tcphdr->seqno = lwip_ntohl(tcphdr->seqno);
@@ -181,6 +184,7 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
     u8_t flags = TCPH_FLAGS(tcphdr);
     u16_t tcplen = p->tot_len + ((flags & (TCP_FIN | TCP_SYN)) ? 1 : 0);
     
+    // 存储tcp标头信息的结构
     struct tcp_info tcpInfo = {
         .tcphdr         = tcphdr,
         .tcphdr_optlen  = tcphdr_optlen,
@@ -192,7 +196,7 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
         .flags          = flags
     };
     
-    /* Get tcp_pcb identifie */
+    /* 获取TCP pcb标识符*/
     int addr_str_len = ip_current_is_v6() ? INET6_ADDRSTRLEN : INET_ADDRSTRLEN;
     char src_addr_chars[addr_str_len];
     char dest_addr_chars[addr_str_len];
@@ -207,19 +211,23 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
         LWIP_ASSERT("error in ip4 ntop",
                     inet_ntop(AF_INET, ip4_current_dest_addr(), dest_addr_chars, addr_str_len) != NULL);
     }
-    NSString *src_addr_str = [NSString stringWithCString:src_addr_chars
-                                                encoding:NSASCIIStringEncoding];
-    NSString *dest_addr_str = [NSString stringWithCString:dest_addr_chars
-                                                 encoding:NSASCIIStringEncoding];
-    NSString *identifie = [NSString stringWithFormat:@"%@-%d-%@-%d",
-                           src_addr_str, tcphdr->src, dest_addr_str, tcphdr->dest];
+    NSString *src_addr_str = [NSString stringWithCString:src_addr_chars encoding:NSASCIIStringEncoding];
+    NSString *dest_addr_str = [NSString stringWithCString:dest_addr_chars encoding:NSASCIIStringEncoding];
+    NSString *identifie = [NSString stringWithFormat:@"%@-%d-%@-%d", src_addr_str, tcphdr->src, dest_addr_str, tcphdr->dest];
+    
+    
+    if (identifie) {
+        NSLog(@"wuplyer ----  当前数据的源ip:%@,源端口:%d-----目标ip:%@,目标端口:%d",src_addr_str, tcphdr->src, dest_addr_str, tcphdr->dest);
+    }
     
     ZPTCPConnection *conn = [ZPPacketTunnel.shared connectionForKey:identifie];
     if (conn) {
+        NSLog(@"wuplyer ----  已有 ZPTCPConnection 对象");
         [conn tcpInputWith:ip_data
                    tcpInfo:tcpInfo
                       pbuf:p];
     } else {
+         NSLog(@"wuplyer ----  没有 ZPTCPConnection 对象,创建新的对象");
         conn = [ZPTCPConnection newTCPConnectionWith:ZPPacketTunnel.shared
                                            identifie:identifie
                                               ipData:&ip_data
@@ -311,9 +319,6 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
 // 数据输入
 - (err_t)ipPacketInput:(NSData *)data
 {
-    
-//    zpi
-    
     NSLog(@"wuplyer ----  数据输入 ipPacketInput");
     NSAssert(data.length <= _netif.mtu, @"error in data length or mtu value");
     
@@ -323,16 +328,16 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
     NSAssert(pbuf_take(p, data.bytes, data.length) == ERR_OK, @"error in pbuf_take");
     
     if (IP_HDR_GET_VERSION(p->payload) == 6) {
-         NSLog(@"wuplyer ----  IPV6 数据");
+        NSLog(@"wuplyer ----  IPV6 数据");
         return ip6_input(p, &_netif);
         
     } else {
-         NSLog(@"wuplyer ----  IPV4 数据");
+        NSLog(@"wuplyer ----  IPV4 数据");
         return ip4_input(p, &_netif);
     }
 }
 
-// MARK: - Misc
+// MARK: - Misc 连接成功
 - (void)tcpConnectionEstablished:(ZPTCPConnection *)conn
 {
     NSAssert(_delegateQueue, @"Not set delegate queue");

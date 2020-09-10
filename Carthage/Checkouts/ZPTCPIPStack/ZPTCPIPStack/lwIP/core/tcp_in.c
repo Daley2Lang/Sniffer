@@ -77,6 +77,14 @@ static void tcp_timewait_input(struct tcp_pcb *pcb, struct zp_tcp_block *block);
  * ip_input()).
  *
  * @param p received TCP segment to process (p->payload pointing to the TCP header)
+ 
+ * TCP的初始输入处理。 验证TCP标头，多路分解
+  * PCB之间的线段，并将其传递到tcp_process（），该实现
+  * TCP有限状态机。 IP层调用此功能（在
+  * ip_input（））。
+  *
+  * 参数 p 接收要处理的TCP段（p-> payload指向TCP标头）
+ 
  */
 void
 tcp_input(struct pbuf *p

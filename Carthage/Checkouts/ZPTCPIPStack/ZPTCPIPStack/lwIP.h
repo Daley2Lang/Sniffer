@@ -46,6 +46,7 @@
 
 /**
  struct to store tcp header info
+ 存储tcp标头信息的结构
  */
 struct tcp_info {
     /* 这些变量是输入中涉及的所有功能的全局变量
@@ -73,9 +74,13 @@ struct zp_tcp_block {
     
     struct tcp_info tcpInfo;
     
-    /* Incremented every coarse grained timer shot (typically every 500 ms). */
+    /* Incremented every coarse grained timer shot (typically every 500 ms).
+     每个粗粒度的计时器射击（通常每500毫秒）增加一次。  ?????????
+     */
     u32_t tcp_ticks;
-    /* Timer counter to handle calling slow-timer from tcp_tmr() */
+    /* Timer counter to handle calling slow-timer from tcp_tmr()
+       计时器计数器，用于处理从tcp_tmr（）调用慢速计时器
+     */
     uint64_t tcp_timer;
     
     /*

@@ -33,6 +33,7 @@ class ViewController: UIViewController {
     }
     @IBAction func clearinfo(_ sender: Any) {
         self.infoView.text = ""
+        self.showLabel.text = ""
     }
     
     lazy var oneSwitch: UISwitch = {
@@ -58,12 +59,16 @@ class ViewController: UIViewController {
             guard error == nil else{
                 return
             }
+            
+            
             let dataStr = String.init(data: data!, encoding: String.Encoding.utf8)
             
             if Thread.isMainThread {
+                self.showLabel.text = "请求成功"
                 self.infoView.text = dataStr
             } else {
                 DispatchQueue.main.async {
+                     self.showLabel.text = "请求成功"
                     self.infoView.text = dataStr
                 }
             }
@@ -73,11 +78,53 @@ class ViewController: UIViewController {
         }
         
         dataTask.resume()
-        
-        
-        
-        
     }
+    
+    
+    @IBAction func requestHost(_ sender: Any) {
+        
+        let session  = URLSession.shared
+               let url = URL.init(string: "http://api.codertopic.com/itapi/questionsapi/questions.php?typeID=10")
+               
+               let dataTask = session.dataTask(with: url!) { (data, res, error) in
+                   guard error == nil else{
+                       return
+                   }
+                   let dataStr = String.init(data: data!, encoding: String.Encoding.utf8)
+                   
+//                   let dic  =  self.stringValueDic(dataStr!)
+                
+                   if Thread.isMainThread {
+                       self.infoView.text = dataStr
+                   } else {
+                       DispatchQueue.main.async {
+                           self.infoView.text = dataStr
+                       }
+                   }
+                   
+                   print("收到的数据：\(dataStr!)")
+                   
+               }
+               
+               dataTask.resume()
+    }
+    
+    // MARK: 字典转字符串
+    func dicValueString(_ dic:[String : Any]) -> String?{
+        let data = try? JSONSerialization.data(withJSONObject: dic, options: [])
+        let str = String(data: data!, encoding: String.Encoding.utf8)
+        return str
+    }
+    
+    // MARK: 字符串转字典
+    func stringValueDic(_ str: String) -> [String : Any]?{
+        let data = str.data(using: String.Encoding.utf8)
+        if let dict = try? JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String : Any] {
+            return dict
+        }
+        return nil
+    }
+    
     func updateConnectButton(){
         switch status {
         case .connecting:

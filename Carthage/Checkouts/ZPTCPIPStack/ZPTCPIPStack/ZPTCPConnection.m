@@ -96,15 +96,15 @@ void zp_tcp_err(void *arg, err_t err)
     NSString *errorDomain = NULL;
     if (err == ERR_ABRT) {
         /* Connection was aborted by local. */
-        errorDomain = @"Connection was aborted by local.";
+        errorDomain = @"Connection was aborted by local.";//连接被本地中止。
     } else if (err == ERR_RST) {
         /* Connection was reset by remote. */
-        errorDomain = @"Connection was reset by remote.";
+        errorDomain = @"Connection was reset by remote.";//连接已通过远程重置。
     } else if (err == ERR_CLSD) {
         /* Connection was successfully closed by remote. */
-        errorDomain = @"Connection was successfully closed by remote.";
+        errorDomain = @"Connection was successfully closed by remote.";//远程已成功关闭连接。
     } else {
-        errorDomain = @"Unknown error.";
+        errorDomain = @"Unknown error.";//位置错误
     }
     NSError *error = [NSError errorWithDomain:errorDomain code:err userInfo:NULL];
     if (conn.delegateQueue) {
@@ -248,7 +248,9 @@ void zp_tcp_err(void *arg, err_t err)
             
             /* set timer */
             _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _timerQueue);
-            /* lwIP's doc suggest run the timer checkout 4 times per second */
+            /* lwIP's doc suggest run the timer checkout 4 times per second
+             lwIP的文档建议每秒运行计时器检出4次
+             */
             int64_t interval = NSEC_PER_SEC * 0.25;
             dispatch_time_t start = dispatch_time(DISPATCH_TIME_NOW, interval);
             dispatch_source_set_timer(_timer, start, interval, interval);
@@ -328,6 +330,8 @@ void zp_tcp_err(void *arg, err_t err)
 
 - (void)write:(NSData *)data
 {
+    
+ 
     dispatch_async(_timerQueue, ^{
         struct tcp_pcb *pcb = _block->pcb;
         if (pcb == NULL || _block->close_after_writing) {
@@ -339,11 +343,11 @@ void zp_tcp_err(void *arg, err_t err)
         } else {
             NSString *errDomain;
             if (err == ERR_CONN) {
-                errDomain = @"Connection is in invalid state for data transmission.";
+                errDomain = @"Connection is in invalid state for data transmission."; //连接处于无效状态以进行数据传输
             } else if (err == ERR_MEM) {
-                errDomain = @"Fail on too much data or there is not enough send buf space for data.";
+                errDomain = @"Fail on too much data or there is not enough send buf space for data.";//太多数据失败或没有足够的发送缓冲区存储数据。
             } else {
-                errDomain = @"Unknown error.";
+                errDomain = @"Unknown error.";//位置错误
             }
             NSError *error = [NSError errorWithDomain:errDomain code:err userInfo:NULL];
             dispatch_async(_delegateQueue, ^{

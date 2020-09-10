@@ -56,9 +56,7 @@ class TCPConnection: NSObject {
         self.addSessionToManager()
         
         do {
-            try self.remote.connect(
-                toHost: self.local.destAddr, 
-                onPort: self.local.destPort
+            try self.remote.connect(toHost: self.local.destAddr,onPort: self.local.destPort
             )
         } catch {
             self.close(with: "\(error)")
@@ -77,6 +75,7 @@ class TCPConnection: NSObject {
         return lhs.index == rhs.index
     }
     
+    //关闭
     func close(with note: String) {
         guard !self.didClose else {
             return
