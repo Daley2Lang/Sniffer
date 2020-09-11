@@ -48,6 +48,13 @@
 		789888FC250A44AE00B66153 /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789888FB250A44AE00B66153 /* UInt128.swift */; };
 		789888FE250A44D700B66153 /* BinaryDataScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789888FD250A44D600B66153 /* BinaryDataScanner.swift */; };
 		78988900250A453C00B66153 /* Checksum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789888FF250A453C00B66153 /* Checksum.swift */; };
+		78D5E58E250B23DC00BE6160 /* Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D5E58D250B23DC00BE6160 /* Tool.m */; };
+		78D5E595250B78EA00BE6160 /* DNSResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D5E590250B78EA00BE6160 /* DNSResolver.swift */; };
+		78D5E596250B78EA00BE6160 /* DNSServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D5E591250B78EA00BE6160 /* DNSServer.swift */; };
+		78D5E597250B78EA00BE6160 /* DNSEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D5E592250B78EA00BE6160 /* DNSEnums.swift */; };
+		78D5E598250B78EA00BE6160 /* DNSMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D5E593250B78EA00BE6160 /* DNSMessage.swift */; };
+		78D5E599250B78EA00BE6160 /* DNSSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D5E594250B78EA00BE6160 /* DNSSession.swift */; };
+		78D5E59B250B799800BE6160 /* QueueFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D5E59A250B799800BE6160 /* QueueFactory.swift */; };
 		D321A2A61F63E26D005F447F /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D321A2A51F63E26D005F447F /* NetworkExtension.framework */; };
 		D321A2A71F63E285005F447F /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D321A2A51F63E26D005F447F /* NetworkExtension.framework */; };
 		D35240041F4BD090006656F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D35240031F4BD090006656F0 /* AppDelegate.swift */; };
@@ -294,6 +301,15 @@
 		789888FB250A44AE00B66153 /* UInt128.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UInt128.swift; sourceTree = "<group>"; };
 		789888FD250A44D600B66153 /* BinaryDataScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinaryDataScanner.swift; sourceTree = "<group>"; };
 		789888FF250A453C00B66153 /* Checksum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checksum.swift; sourceTree = "<group>"; };
+		78D5E58B250B23DC00BE6160 /* Sniffer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sniffer-Bridging-Header.h"; sourceTree = "<group>"; };
+		78D5E58C250B23DC00BE6160 /* Tool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tool.h; sourceTree = "<group>"; };
+		78D5E58D250B23DC00BE6160 /* Tool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tool.m; sourceTree = "<group>"; };
+		78D5E590250B78EA00BE6160 /* DNSResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
+		78D5E591250B78EA00BE6160 /* DNSServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNSServer.swift; sourceTree = "<group>"; };
+		78D5E592250B78EA00BE6160 /* DNSEnums.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNSEnums.swift; sourceTree = "<group>"; };
+		78D5E593250B78EA00BE6160 /* DNSMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNSMessage.swift; sourceTree = "<group>"; };
+		78D5E594250B78EA00BE6160 /* DNSSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNSSession.swift; sourceTree = "<group>"; };
+		78D5E59A250B799800BE6160 /* QueueFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueFactory.swift; sourceTree = "<group>"; };
 		D321A2A51F63E26D005F447F /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = System/Library/Frameworks/NetworkExtension.framework; sourceTree = SDKROOT; };
 		D35240001F4BD090006656F0 /* Sniffer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sniffer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D35240031F4BD090006656F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -500,6 +516,8 @@
 		789888E8250A3CFC00B66153 /* UDP */ = {
 			isa = PBXGroup;
 			children = (
+				78D5E59A250B799800BE6160 /* QueueFactory.swift */,
+				78D5E58F250B78E100BE6160 /* DNS */,
 				789888F8250A442500B66153 /* Tool */,
 				789888EB250A3D7500B66153 /* IP */,
 				789888E9250A3D2200B66153 /* IPPacket.swift */,
@@ -533,6 +551,18 @@
 				789888F9250A444B00B66153 /* Port.swift */,
 			);
 			name = Tool;
+			sourceTree = "<group>";
+		};
+		78D5E58F250B78E100BE6160 /* DNS */ = {
+			isa = PBXGroup;
+			children = (
+				78D5E592250B78EA00BE6160 /* DNSEnums.swift */,
+				78D5E593250B78EA00BE6160 /* DNSMessage.swift */,
+				78D5E590250B78EA00BE6160 /* DNSResolver.swift */,
+				78D5E591250B78EA00BE6160 /* DNSServer.swift */,
+				78D5E594250B78EA00BE6160 /* DNSSession.swift */,
+			);
+			name = DNS;
 			sourceTree = "<group>";
 		};
 		D3523FF71F4BD090006656F0 = {
@@ -569,10 +599,13 @@
 				D379F6561F58FCC4007784F4 /* SessionModel.swift */,
 				782E035924F60951004AE421 /* VpnManager.swift */,
 				782E035B24F60F1B004AE421 /* Notifications.swift */,
+				78D5E58C250B23DC00BE6160 /* Tool.h */,
+				78D5E58D250B23DC00BE6160 /* Tool.m */,
 				D35240071F4BD090006656F0 /* Main.storyboard */,
 				D352400A1F4BD090006656F0 /* Assets.xcassets */,
 				D352400C1F4BD090006656F0 /* LaunchScreen.storyboard */,
 				D352400F1F4BD090006656F0 /* Info.plist */,
+				78D5E58B250B23DC00BE6160 /* Sniffer-Bridging-Header.h */,
 			);
 			path = Sniffer;
 			sourceTree = "<group>";
@@ -1021,6 +1054,7 @@
 					D3523FFF1F4BD090006656F0 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = UHREU5H63B;
+						LastSwiftMigration = 1130;
 						ProvisioningStyle = Manual;
 					};
 					D35240181F4BD0E5006656F0 = {
@@ -1113,6 +1147,7 @@
 				782E035A24F60952004AE421 /* VpnManager.swift in Sources */,
 				782E035C24F60F1B004AE421 /* Notifications.swift in Sources */,
 				D35240061F4BD090006656F0 /* ViewController.swift in Sources */,
+				78D5E58E250B23DC00BE6160 /* Tool.m in Sources */,
 				D35240041F4BD090006656F0 /* AppDelegate.swift in Sources */,
 				D3DE8E981F57CA64006700C0 /* Extension.swift in Sources */,
 				D39DFBBA1F5CF7E10067F454 /* SessionViewController.swift in Sources */,
@@ -1124,15 +1159,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				78D5E59B250B799800BE6160 /* QueueFactory.swift in Sources */,
 				789888EA250A3D2200B66153 /* IPPacket.swift in Sources */,
 				789888F7250A43BA00B66153 /* PacketProtocolParser.swift in Sources */,
 				789888DF250A037300B66153 /* UDProxyServer.swift in Sources */,
 				D35240281F4BD160006656F0 /* PacketTunnelProvider.swift in Sources */,
+				78D5E599250B78EA00BE6160 /* DNSSession.swift in Sources */,
+				78D5E597250B78EA00BE6160 /* DNSEnums.swift in Sources */,
 				789888E1250A038C00B66153 /* UDPConnection.swift in Sources */,
 				D35240391F4D3091006656F0 /* TCPConnection.swift in Sources */,
+				78D5E598250B78EA00BE6160 /* DNSMessage.swift in Sources */,
 				789888F5250A3D8700B66153 /* IPAddress.swift in Sources */,
 				D379F6581F58FCC4007784F4 /* SessionModel.swift in Sources */,
 				789888E7250A248B00B66153 /* IPStackProtocol.swift in Sources */,
+				78D5E596250B78EA00BE6160 /* DNSServer.swift in Sources */,
 				789888FC250A44AE00B66153 /* UInt128.swift in Sources */,
 				789888F1250A3D8700B66153 /* IPInterval.swift in Sources */,
 				789888F2250A3D8700B66153 /* IPPool.swift in Sources */,
@@ -1143,6 +1183,7 @@
 				789888F4250A3D8700B66153 /* IPMask.swift in Sources */,
 				789888FA250A444B00B66153 /* Port.swift in Sources */,
 				D35240331F4BECE8006656F0 /* HTTPConnection.swift in Sources */,
+				78D5E595250B78EA00BE6160 /* DNSResolver.swift in Sources */,
 				789888E3250A050500B66153 /* NWUDPSocket.swift in Sources */,
 				D35240311F4BE7B6006656F0 /* HTTPProxyServer.swift in Sources */,
 				789888F3250A3D8700B66153 /* IPRange.swift in Sources */,
@@ -1341,6 +1382,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Sniffer/Sniffer.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = UHREU5H63B;
@@ -1354,6 +1396,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.microwu.qos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "QoS-Develop";
+				SWIFT_OBJC_BRIDGING_HEADER = "Sniffer/Sniffer-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
@@ -1363,6 +1407,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Sniffer/Sniffer.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = UHREU5H63B;
@@ -1376,6 +1421,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.microwu.qos;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "QoS-Develop";
+				SWIFT_OBJC_BRIDGING_HEADER = "Sniffer/Sniffer-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

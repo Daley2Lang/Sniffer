@@ -18,6 +18,9 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     
     var tcpProxy: TCPProxyServer?
     
+    var udpProxy: UDProxyServer?
+    
+    
     override func startTunnel(options: [String : NSObject]? = nil, completionHandler: @escaping (Error?) -> Void) {
         
         NSLog("wuplyer ----  通道开启")
@@ -44,7 +47,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         proxySettings.exceptionList = ["192.168.0.0/16","10.0.0.0/8","172.16.0.0/12","127.0.0.1","localhost", "*.local"]
         settings.proxySettings = proxySettings
         /* ipv4 settings */
-        //        let ipv4Settings: NEIPv4Settings = NEIPv4Settings(addresses: ["127.0.0.1"],subnetMasks: ["255.255.255.255"])
+//       let ipv4Settings: NEIPv4Settings = NEIPv4Settings(addresses: ["127.0.0.1"],subnetMasks: ["255.255.255.255"])//127.0.0.1 回送地址 不会进行任何网络发送
         let ipv4Settings: NEIPv4Settings = NEIPv4Settings(addresses: ["192.168.0.2"],subnetMasks: ["255.255.255.255"])
         ipv4Settings.includedRoutes = [NEIPv4Route.default()]//即vpn tunnel需要拦截包的地址，如果全部拦截则设置[NEIPv4Route defaultRoute]，也可以指定部分需要拦截的地址
         ipv4Settings.excludedRoutes = [
@@ -56,10 +59,21 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         /* MTU */
         settings.mtu = NSNumber(value: UINT16_MAX)
         
+        
+        
+        let DNSSettings = NEDNSSettings(servers: ["198.18.0.1"])
+        DNSSettings.matchDomains = [""]
+        DNSSettings.matchDomainsNoSearch = false
+        settings.dnsSettings = DNSSettings
+        
+        
         self.tcpProxy = TCPProxyServer()
         self.tcpProxy!.server.ipv4Setting( withAddress: settings.ipv4Settings!.addresses[0], netmask: settings.ipv4Settings!.subnetMasks[0])
         let mtuValue = settings.mtu!.uint16Value
         NSLog("wuplyer ----  最大的mtu值: %d",mtuValue)
+        
+        
+        self.udpProxy = UDProxyServer()
         
         self.tcpProxy!.server.mtu(mtuValue) { datas, numbers in
             guard let _datas: [Data] = datas,let _nums: [NSNumber] = numbers else{return}
@@ -124,18 +138,40 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     func handlePackets(packets: [Data], protocols: [NSNumber]) {
         for (index, data) in packets.enumerated() {
             
-            if IPPacket.peekProtocol(data) == .udp {
-                NSLog("wuplyer ----  捕获到UDP 数据")
-            }
-            
-            if IPPacket.peekProtocol(data) == .tcp {
-                NSLog("wuplyer ----  捕获到TCP 数据")
-            }
+          
             
             switch protocols[index].int32Value {
             case AF_INET: /* internetwork: UDP, TCP, etc. */
-                NSLog("wuplyer ----  tcp数据处理")
-                self.tcpProxy?.server.ipPacketInput(data)
+                
+                
+                if IPPacket.peekProtocol(data) == .udp {
+                    NSLog("wuplyer ----  捕获到UDP 数据")
+                    
+                    let desPort =  IPPacket.peekDestinationPort(data)
+                   let desiIP =  IPPacket.peekDestinationAddress(data)
+                    
+                    let sourceIP = IPPacket.peekSourceAddress(data)
+                    let sourcePort = IPPacket.peekSourcePort(data)
+                    
+                    
+                    NSLog("wuplyer ----  捕获到UDP 源IP:\(String(describing: sourceIP))")
+                    NSLog("wuplyer ----  捕获到UDP 源端口:\(String(describing: sourcePort))")
+                    NSLog("wuplyer ----  捕获到UDP 目标IP:\(String(describing: desiIP))")
+                    NSLog("wuplyer ----  捕获到UDP 目标端口:\(desPort ?? 9527)")
+                    
+                    
+                    
+                    
+                    _ = self.udpProxy?.input(packet: data, version: protocols[index])
+                }
+                
+                if IPPacket.peekProtocol(data) == .tcp {
+                    NSLog("wuplyer ----  捕获到TCP 数据")
+                    NSLog("wuplyer ----  tcp数据处理")
+                    self.tcpProxy?.server.ipPacketInput(data)
+                }
+                
+           
             case AF_INET6: //暂不支持IPV6
                 break
             default:

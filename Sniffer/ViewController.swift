@@ -40,6 +40,11 @@ class ViewController: UIViewController {
         return (self.tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as! SwitchCell).oneSwitch
     }()
     
+    @IBAction func refreshNet(_ sender: Any) {
+        
+        Tool.getIPAddress(0)
+        
+    }
     @IBAction func click(_ sender: Any) {
         print("connect tap")
         if(VpnManager.shared.vpnStatus == .off){

@@ -86,28 +86,28 @@ public class UDProxyServer:IPStackProtocol {
     
     //针对数据创建socket
     fileprivate func findOrCreateSocketForPacket(_ packet: IPPacket) -> (ConnectInfo, NWUDPSocket)? {
-        // swiftlint:disable:next force_cast
-//        let udpParser = packet.protocolParser as! UDPProtocolParser
-//        let connectInfo = ConnectInfo(sourceAddress: packet.sourceAddress, sourcePort: udpParser.sourcePort, destinationAddress: packet.destinationAddress, destinationPort: udpParser.destinationPort)
-//
-//        if let (_, socket) = findSocket(connectInfo: connectInfo, socket: nil) {
-//            return (connectInfo, socket)
-//        }
-//
-//        guard let session = ConnectSession(ipAddress: connectInfo.destinationAddress, port: connectInfo.destinationPort) else {
-//            return nil
-//        }
-//
-//        guard let udpSocket = NWUDPSocket(host: session.host, port: session.port) else {
-//            return nil
-//        }
-//
-//        udpSocket.delegate = self
-//        queueServer.sync {
-//            self.activeSockets[connectInfo] = udpSocket
-//        }
-//        return (connectInfo, udpSocket)
-        return nil
+//         swiftlint:disable:next force_cast
+        let udpParser = packet.protocolParser as! UDPProtocolParser
+        let connectInfo = ConnectInfo(sourceAddress: packet.sourceAddress, sourcePort: udpParser.sourcePort, destinationAddress: packet.destinationAddress, destinationPort: udpParser.destinationPort)
+
+        if let (_, socket) = findSocket(connectInfo: connectInfo, socket: nil) {
+            return (connectInfo, socket)
+        }
+
+        guard let session = ConnectSession(ipAddress: connectInfo.destinationAddress, port: connectInfo.destinationPort) else {
+            return nil
+        }
+
+        guard let udpSocket = NWUDPSocket(host: session.host, port: session.port) else {
+            return nil
+        }
+
+        udpSocket.delegate = self
+        queueServer.sync {
+            self.activeSockets[connectInfo] = udpSocket
+        }
+        return (nil, udpSocket)
+//        return nil
     }
     
     
