@@ -29,11 +29,10 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
     fileprivate let matchedType = [DNSType.a]
 
     /**
-     Initailize a DNS server.
-
-     - parameter address:    The IP address of the server.
-     - parameter port:       The listening port of the server.
-     - parameter fakeIPPool: The pool of fake IP addresses. Set to nil if no fake IP is needed.
+     初始化DNS服务器
+     -参数地址：服务器的IP地址。
+     -参数端口：服务器的侦听端口。
+     -参数fakeIPPool：假IP地址池。 如果不需要伪造IP，则设置为nil。
      */
     public init(address: IPAddress, port: Port, fakeIPPool: IPPool? = nil) {
         serverAddress = address

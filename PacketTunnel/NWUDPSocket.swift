@@ -18,7 +18,7 @@ public protocol NWUDPSocketDelegate : class{
 }
 
 public class NWUDPSocket: NSObject {
-
+    
     private let session: NWUDPSession
     private var pendingWriteData : [Data] = []
     private var writing = false
@@ -31,7 +31,7 @@ public class NWUDPSocket: NSObject {
     ///由于UDP不具有“关闭”语义，因此这可以指示超时。
     public var lastActive: Date = Date()
     
-     public init?(host: String, port: Int, timeout: Int = Opt.UDPSocketActiveTimeout) {
+    public init?(host: String, port: Int, timeout: Int = Opt.UDPSocketActiveTimeout) {
         guard let udpSession = UDProxyServer.TunnelProvider?.createUDPSession(to: NWHostEndpoint(hostname: host, port: "\(port)"), from: nil) else {
             return nil
         }
@@ -39,17 +39,17 @@ public class NWUDPSocket: NSObject {
         
         self.timeOut = timeout
         
-         timer = DispatchSource.makeTimerSource(queue:queue)
+        timer = DispatchSource.makeTimerSource(queue:queue)
         
         super.init()
         
         timer.schedule(deadline: DispatchTime.now(), repeating: DispatchTimeInterval.seconds(Opt.UDPSocketActiveCheckInterval), leeway: DispatchTimeInterval.seconds(Opt.UDPSocketActiveCheckInterval))
         
         timer.setEventHandler { [weak self] in
-                  self?.queueCall {
-                      self?.checkStatus()
-                  }
-              }
+            self?.queueCall {
+                self?.checkStatus()
+            }
+        }
         
         timer.resume()
         
@@ -57,25 +57,25 @@ public class NWUDPSocket: NSObject {
         
         session.setReadHandler({ [ weak self ] datas, error in
             self?.queueCall {
-                          guard let sSelf = self else {
-                              return
-                          }
-                          
-                          sSelf.updateActivityTimer()
-                          
-                          guard error == nil, let dataArray = datas else {
-                              NSLog("Error when reading from remote server. \(error?.localizedDescription ?? "Connection reset")")
-                              return
-                          }
-                          
-                          for data in dataArray {
-                              sSelf.delegate?.didReceive(data: data, from: sSelf)
-                          }
-                      }
-        }, maxDatagrams: 32)
+                guard let sSelf = self else {
+                    return
+                }
+                
+                sSelf.updateActivityTimer()
+                
+                guard error == nil, let dataArray = datas else {
+                    NSLog("Error when reading from remote server. \(error?.localizedDescription ?? "Connection reset")")
+                    return
+                }
+                
+                for data in dataArray {
+                    sSelf.delegate?.didReceive(data: data, from: sSelf)
+                }
+            }
+            }, maxDatagrams: 32)
         
         
-       
+        
     }
     
     
@@ -100,41 +100,41 @@ public class NWUDPSocket: NSObject {
     }
     
     private func checkWrite() {
-          updateActivityTimer()
-          
-          guard session.state == .ready else {
-              return
-          }
-          
-          guard !writing else {
-              return
-          }
-          
-          guard pendingWriteData.count > 0 else {
-              return
-          }
-          
-          writing = true
-          session.writeMultipleDatagrams(self.pendingWriteData) {_ in
-              self.queueCall {
-                  self.writing = false
-                  self.checkWrite()
-              }
-          }
-          self.pendingWriteData.removeAll(keepingCapacity: true)
-      }
-      
+        updateActivityTimer()
+        
+        guard session.state == .ready else {
+            return
+        }
+        
+        guard !writing else {
+            return
+        }
+        
+        guard pendingWriteData.count > 0 else {
+            return
+        }
+        
+        writing = true
+        session.writeMultipleDatagrams(self.pendingWriteData) {_ in
+            self.queueCall {
+                self.writing = false
+                self.checkWrite()
+            }
+        }
+        self.pendingWriteData.removeAll(keepingCapacity: true)
+    }
+    
     
     private func updateActivityTimer() {
-          lastActive = Date()
-      }
-      
+        lastActive = Date()
+    }
+    
     
     private func queueCall(block: @escaping () -> Void) {
-          queue.async {
-              block()
-          }
-      }
+        queue.async {
+            block()
+        }
+    }
     
     private func checkStatus() {
         if timeOut > 0 && Date().timeIntervalSince(lastActive) > TimeInterval(timeOut) {
@@ -142,18 +142,18 @@ public class NWUDPSocket: NSObject {
         }
     }
     
-   
+    
     //将数据发往远端
-     public func write(data: Data) {
-         pendingWriteData.append(data)
-         checkWrite()
-     }
+    public func write(data: Data) {
+        pendingWriteData.append(data)
+        checkWrite()
+    }
     
     public func disconnect() {
         
     }
     
     deinit {
-          session.removeObserver(self, forKeyPath: #keyPath(NWUDPSession.state))
-      }
+        session.removeObserver(self, forKeyPath: #keyPath(NWUDPSession.state))
+    }
 }

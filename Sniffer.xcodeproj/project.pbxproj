@@ -517,6 +517,7 @@
 			isa = PBXGroup;
 			children = (
 				78D5E59A250B799800BE6160 /* QueueFactory.swift */,
+				78D5E59C250CA60000BE6160 /* Rules */,
 				78D5E58F250B78E100BE6160 /* DNS */,
 				789888F8250A442500B66153 /* Tool */,
 				789888EB250A3D7500B66153 /* IP */,
@@ -563,6 +564,13 @@
 				78D5E594250B78EA00BE6160 /* DNSSession.swift */,
 			);
 			name = DNS;
+			sourceTree = "<group>";
+		};
+		78D5E59C250CA60000BE6160 /* Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Rules;
 			sourceTree = "<group>";
 		};
 		D3523FF71F4BD090006656F0 = {
