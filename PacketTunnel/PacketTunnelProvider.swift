@@ -47,7 +47,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         proxySettings.exceptionList = ["192.168.0.0/16","10.0.0.0/8","172.16.0.0/12","127.0.0.1","localhost", "*.local"]
         settings.proxySettings = proxySettings
         /* ipv4 settings */
-//       let ipv4Settings: NEIPv4Settings = NEIPv4Settings(addresses: ["127.0.0.1"],subnetMasks: ["255.255.255.255"])//127.0.0.1 回送地址 不会进行任何网络发送
+        //       let ipv4Settings: NEIPv4Settings = NEIPv4Settings(addresses: ["127.0.0.1"],subnetMasks: ["255.255.255.255"])//127.0.0.1 回送地址 不会进行任何网络发送
         let ipv4Settings: NEIPv4Settings = NEIPv4Settings(addresses: ["192.168.0.2"],subnetMasks: ["255.255.255.255"])
         ipv4Settings.includedRoutes = [NEIPv4Route.default()]//即vpn tunnel需要拦截包的地址，如果全部拦截则设置[NEIPv4Route defaultRoute]，也可以指定部分需要拦截的地址
         ipv4Settings.excludedRoutes = [
@@ -88,6 +88,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         let resolver = UDPDNSResolver(address: IPAddress(fromString: "114.114.114.114")!, port: Port(port: 53))
         dnsServer.registerResolver(resolver)
         DNSServer.currentServer = dnsServer
+        
+        
         
         
         
@@ -149,17 +151,14 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
     func handlePackets(packets: [Data], protocols: [NSNumber]) {
         for (index, data) in packets.enumerated() {
             
-          
-            
             switch protocols[index].int32Value {
             case AF_INET: /* internetwork: UDP, TCP, etc. */
-                
                 
                 if IPPacket.peekProtocol(data) == .udp {
                     NSLog("wuplyer ----  捕获到UDP 数据")
                     
                     let desPort =  IPPacket.peekDestinationPort(data)
-                   let desiIP =  IPPacket.peekDestinationAddress(data)
+                    let desiIP =  IPPacket.peekDestinationAddress(data)
                     
                     let sourceIP = IPPacket.peekSourceAddress(data)
                     let sourcePort = IPPacket.peekSourcePort(data)
@@ -182,7 +181,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
                     self.tcpProxy?.server.ipPacketInput(data)
                 }
                 
-           
+                
             case AF_INET6: //暂不支持IPV6
                 break
             default:
