@@ -18,8 +18,7 @@ open class DNSSession {
             return nil
         }
         
-//        return Utils.GeoIPLookup.Lookup(self.realIP!.presentation)
-        return ""
+        return Utils.GeoIPLookup.Lookup(self.realIP!.presentation)
     }()
 
     init?(message: DNSMessage) {

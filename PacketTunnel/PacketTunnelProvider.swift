@@ -81,8 +81,9 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         }
         
         
-        self.udpProxy = UDProxyServer()
+        self.udpProxy = UDProxyServer(packetFlow: self.packetFlow)
         UDProxyServer.TunnelProvider = self
+  
         let fakeIPPool = try! IPPool(range: IPRange(startIP: IPAddress(fromString: "198.18.1.1")!, endIP: IPAddress(fromString: "198.18.255.255")!))
         let dnsServer = DNSServer(address: IPAddress(fromString: "198.18.0.1")!, port: Port(port: 53), fakeIPPool: fakeIPPool)
         let resolver = UDPDNSResolver(address: IPAddress(fromString: "114.114.114.114")!, port: Port(port: 53))
@@ -155,24 +156,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             case AF_INET: /* internetwork: UDP, TCP, etc. */
                 
                 if IPPacket.peekProtocol(data) == .udp {
-                    NSLog("wuplyer ----  捕获到UDP 数据")
                     
-                    let desPort =  IPPacket.peekDestinationPort(data)
-                    let desiIP =  IPPacket.peekDestinationAddress(data)
-                    
-                    let sourceIP = IPPacket.peekSourceAddress(data)
-                    let sourcePort = IPPacket.peekSourcePort(data)
-                    
-                    
-                    NSLog("wuplyer ----  捕获到UDP 源IP:\(String(describing: sourceIP))")
-                    NSLog("wuplyer ----  捕获到UDP 源端口:\(String(describing: sourcePort))")
-                    NSLog("wuplyer ----  捕获到UDP 目标IP:\(String(describing: desiIP))")
-                    NSLog("wuplyer ----  捕获到UDP 目标端口:\(desPort ?? 9527)")
-                    
-                    
-                    
-                    
-                    _ = self.udpProxy?.input(packet: data, version: protocols[index])
+                     self.udpProxy?.input(packet: data, version: protocols[index])
                 }
                 
                 if IPPacket.peekProtocol(data) == .tcp {

@@ -149,7 +149,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         }
         resolvers = []
 
-        //用`dispatch_after`调度的块被忽略，因为它们很难被取消。但是不应该有任何后果，除了一些`IPAddress`es和`queue'将在以后发布之外，所有内容都会被发布。
+        // The blocks scheduled with `dispatch_after` are ignored since they are hard to cancel. But there should be no consequence, everything will be released except for a few `IPAddress`es and the `queue` which will be released later.
     }
 
     fileprivate func outputSession(_ session: DNSSession) {

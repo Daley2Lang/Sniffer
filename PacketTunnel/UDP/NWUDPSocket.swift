@@ -36,7 +36,7 @@ public class NWUDPSocket: NSObject {
             return nil
         }
         session  = udpSession
-         NSLog("wuplyer ---- 创建 好系统 UDPSession socket")
+        
         self.timeOut = timeout
         
         timer = DispatchSource.makeTimerSource(queue:queue)
@@ -60,12 +60,14 @@ public class NWUDPSocket: NSObject {
                 guard let sSelf = self else {
                     return
                 }
+                
                 sSelf.updateActivityTimer()
                 
                 guard error == nil, let dataArray = datas else {
-                    NSLog("wuplyer ---- 从远程服务器读取时出错. \(error?.localizedDescription ?? "链接重连")")
+                    NSLog("Error when reading from remote server. \(error?.localizedDescription ?? "Connection reset")")
                     return
                 }
+                
                 for data in dataArray {
                     sSelf.delegate?.didReceive(data: data, from: sSelf)
                 }

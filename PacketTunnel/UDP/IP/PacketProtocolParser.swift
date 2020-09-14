@@ -20,16 +20,16 @@ class UDPProtocolParser: TransportProtocolParserProtocol {
     /// The destination port.
     var destinationPort: Port!
 
-    /// 包含UDP段的数据。
+    /// The data containing the UDP segment.
     var packetData: Data!
 
-    /// UDP数据段在“ packetData”中的偏移量。
+    /// The offset of the UDP segment in the `packetData`.
     var offset: Int = 0
 
-    /// 要封装的有效负载。
+    /// The payload to be encapsulated.
     var payload: Data!
 
-    /// UDP段的长度。
+    /// The length of the UDP segment.
     var bytesLength: Int {
         return payload.count + 8
     }

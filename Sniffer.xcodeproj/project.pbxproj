@@ -26,6 +26,8 @@
 		7876D4B7250244D300B87C46 /* IPDNSProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876D4A9250244D300B87C46 /* IPDNSProtocol.m */; };
 		7876D4B8250244D300B87C46 /* IPConstant.m in Sources */ = {isa = PBXBuildFile; fileRef = 7876D4AA250244D300B87C46 /* IPConstant.m */; };
 		7876D4BA2502453500B87C46 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7876D4B92502451F00B87C46 /* libresolv.tbd */; };
+		7879D285250F6E19001A53A3 /* AdapterFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879D284250F6E19001A53A3 /* AdapterFactory.swift */; };
+		7879D287250F6ECB001A53A3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879D286250F6ECB001A53A3 /* Utils.swift */; };
 		788A03E324D2558300B01AE7 /* ZPTCPIPStack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3BAE1501F653FA200A349CA /* ZPTCPIPStack.framework */; };
 		788A03E424D2558300B01AE7 /* ZPTCPIPStack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D3BAE1501F653FA200A349CA /* ZPTCPIPStack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		789888662507A1AD00B66153 /* ZPTCPBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 789888642507A1AD00B66153 /* ZPTCPBridge.h */; };
@@ -291,6 +293,8 @@
 		7876D4A9250244D300B87C46 /* IPDNSProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPDNSProtocol.m; sourceTree = "<group>"; };
 		7876D4AA250244D300B87C46 /* IPConstant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IPConstant.m; sourceTree = "<group>"; };
 		7876D4B92502451F00B87C46 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libresolv.tbd; sourceTree = DEVELOPER_DIR; };
+		7879D284250F6E19001A53A3 /* AdapterFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdapterFactory.swift; sourceTree = "<group>"; };
+		7879D286250F6ECB001A53A3 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		788A03DB24D174F800B01AE7 /* Sniffer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sniffer.entitlements; sourceTree = "<group>"; };
 		789888642507A1AD00B66153 /* ZPTCPBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZPTCPBridge.h; sourceTree = "<group>"; };
 		789888652507A1AD00B66153 /* ZPTCPBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZPTCPBridge.m; sourceTree = "<group>"; };
@@ -538,6 +542,7 @@
 		789888E8250A3CFC00B66153 /* UDP */ = {
 			isa = PBXGroup;
 			children = (
+				7879D284250F6E19001A53A3 /* AdapterFactory.swift */,
 				78D5E59D250CC5F700BE6160 /* ConnectSession.swift */,
 				78D5E59A250B799800BE6160 /* QueueFactory.swift */,
 				78D5E59C250CA60000BE6160 /* Rules */,
@@ -569,6 +574,7 @@
 		789888F8250A442500B66153 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				7879D286250F6ECB001A53A3 /* Utils.swift */,
 				789888FF250A453C00B66153 /* Checksum.swift */,
 				789888FD250A44D600B66153 /* BinaryDataScanner.swift */,
 				789888FB250A44AE00B66153 /* UInt128.swift */,
@@ -1212,10 +1218,12 @@
 				D35240281F4BD160006656F0 /* PacketTunnelProvider.swift in Sources */,
 				78D5E599250B78EA00BE6160 /* DNSSession.swift in Sources */,
 				78D5E5AB250CC62200BE6160 /* AllRule.swift in Sources */,
+				7879D285250F6E19001A53A3 /* AdapterFactory.swift in Sources */,
 				78D5E597250B78EA00BE6160 /* DNSEnums.swift in Sources */,
 				78D5E59E250CC5F800BE6160 /* ConnectSession.swift in Sources */,
 				789888E1250A038C00B66153 /* UDPConnection.swift in Sources */,
 				78D5E5A9250CC62200BE6160 /* IPRangeListRule.swift in Sources */,
+				7879D287250F6ECB001A53A3 /* Utils.swift in Sources */,
 				D35240391F4D3091006656F0 /* TCPConnection.swift in Sources */,
 				78D5E598250B78EA00BE6160 /* DNSMessage.swift in Sources */,
 				789888F5250A3D8700B66153 /* IPAddress.swift in Sources */,

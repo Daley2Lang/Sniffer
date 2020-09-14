@@ -7,7 +7,7 @@ open class RuleManager {
     public static var currentManager: RuleManager = RuleManager(fromRules: [], appendDirect: true)
     /// The rule list.
     var rules: [Rule] = []
-//    open var observer: Observer<RuleMatchEvent>?
+    open var observer: Observer<RuleMatchEvent>?
 
     /**
      根据给定的规则创建一个新的“ RuleManager”。
@@ -21,7 +21,7 @@ open class RuleManager {
             self.rules.append(DirectRule())
         }
 
-//        observer = ObserverFactory.currentFactory?.getObserverForRuleManager(self)
+        observer = ObserverFactory.currentFactory?.getObserverForRuleManager(self)
     }
 
     /**
@@ -33,7 +33,7 @@ open class RuleManager {
         for (i, rule) in rules[session.indexToMatch..<rules.count].enumerated() {
             let result = rule.matchDNS(session, type: type)
 
-//            observer?.signal(.dnsRuleMatched(session, rule: rule, type: type, result: result))
+            observer?.signal(.dnsRuleMatched(session, rule: rule, type: type, result: result))
 
             switch result {
             case .fake, .real, .unknown:
@@ -54,18 +54,18 @@ open class RuleManager {
      */
     func match(_ session: ConnectSession) -> AdapterFactory! {
         if session.matchedRule != nil {
-//            observer?.signal(.ruleMatched(session, rule: session.matchedRule!))
+            observer?.signal(.ruleMatched(session, rule: session.matchedRule!))
             return session.matchedRule!.match(session)
         }
 
         for rule in rules {
             if let adapterFactory = rule.match(session) {
-//                observer?.signal(.ruleMatched(session, rule: rule))
+                observer?.signal(.ruleMatched(session, rule: rule))
 
                 session.matchedRule = rule
                 return adapterFactory
             } else {
-//                observer?.signal(.ruleDidNotMatch(session, rule: rule))
+                observer?.signal(.ruleDidNotMatch(session, rule: rule))
             }
         }
         return nil // this should never happens
