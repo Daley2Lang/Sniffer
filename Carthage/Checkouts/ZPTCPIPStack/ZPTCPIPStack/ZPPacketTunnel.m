@@ -220,6 +220,7 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
         NSLog(@"wuplyer ----  当前数据的源ip:%@,源端口:%d-----目标ip:%@,目标端口:%d",src_addr_str, tcphdr->src, dest_addr_str, tcphdr->dest);
     }
     
+    //
     ZPTCPConnection *conn = [ZPPacketTunnel.shared connectionForKey:identifie];
     if (conn) {
         NSLog(@"wuplyer ----  已有 ZPTCPConnection 对象");
@@ -283,14 +284,13 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
     _output = output;
 }
 
+
+//开始
 -(void)ipv4SettingWithAddress:(NSString *)addr netmask:(NSString *)netmask
 {
-    
     NSLog(@"wuplyer ----  tcp 开启的地址%@",addr);
     NSLog(@"wuplyer ----  tcp 开启的子网掩码%@",netmask);
-    
     struct netif *netif = &_netif;
-    
     /* 配置地址 */
     ip4_addr_t ip4_addr;
     const char *addr_chars = [addr cStringUsingEncoding:NSASCIIStringEncoding];
@@ -330,7 +330,6 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
     if (IP_HDR_GET_VERSION(p->payload) == 6) {
         NSLog(@"wuplyer ----  IPV6 数据");
         return ip6_input(p, &_netif);
-        
     } else {
         NSLog(@"wuplyer ----  IPV4 数据");
         return ip4_input(p, &_netif);

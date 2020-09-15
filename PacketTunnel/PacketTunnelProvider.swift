@@ -26,6 +26,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         NSLog("wuplyer ----  通道开启")
         
         Tunnel = self
+        let type = self.routingMethod
+        
         /* http */
         self.httpProxy = HTTPProxyServer()
         self.httpProxy!.start(with: "127.0.0.1")
@@ -36,13 +38,15 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         let port = self.httpProxy!.listenSocket.localPort
         
         let settings: NEPacketTunnelNetworkSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "127.0.0.1")
+             
+        
         /* proxy settings */
         let proxySettings: NEProxySettings = NEProxySettings()
         proxySettings.httpServer = NEProxyServer(address: host, port: Int(port))
         proxySettings.httpsServer = NEProxyServer(address: host, port: Int(port))
         proxySettings.autoProxyConfigurationEnabled = false
-        //                proxySettings.httpEnabled = true
-        //                proxySettings.httpsEnabled = true
+//        proxySettings.httpEnabled = true
+//        proxySettings.httpsEnabled = true
         proxySettings.excludeSimpleHostnames = true
         proxySettings.exceptionList = ["192.168.0.0/16","10.0.0.0/8","172.16.0.0/12","127.0.0.1","localhost", "*.local"]
         settings.proxySettings = proxySettings
@@ -100,30 +104,42 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             if err == nil {
                 NSLog("wuplyer ----  readPacket")
                 
-                //                if #available(iOSApplicationExtension 10.0, *) {
-                //                    self.packetFlow.readPacketObjects { packeArray in
-                //                        for (index, packe) in packeArray.enumerated() {
-                //
-                //                            //                                            NSLog("获取的数据来自\(String(describing: data.metadata?.sourceAppSigningIdentifier))")
-                //                            //                                            data.metadata?.sourceAppSigningIdentifier
-                //                            //                                            data.protocolFamily
-                //
-                //                            packe.data
-                //                            packe.protocolFamily
-                //
-                //
-                //                        }
-                //                    }
-                //                } else {
-                //
-                //                }
-                
-                self.packetFlow.readPackets() { datas, nums in
+                if #available(iOSApplicationExtension 10.0, *) {
+                    self.packetFlow.readPacketObjects { packeArray in
+                        
+                        NSLog("wuplyer ----  数据包数量 %d", packeArray.count)
+                        NSLog("wuplyer ----  将数据读出")
+                        
+                        
+                        var dataArray:[Data] = Array()
+                        var protocolArray:[sa_family_t] = Array()
+                        
+                        
+                        for (_, packe) in packeArray.enumerated() {
+                  
+                            dataArray.append(packe.data)
+                            protocolArray.append(packe.protocolFamily)
+                        }
+                        
+                        self.handle(packets: dataArray, protocols: protocolArray as [NSNumber])
+                        
+                        
+                        
+                        
+                        dataArray.removeAll()
+                        protocolArray.removeAll()
+                        
+                    }
+                } else {
                     
-                    NSLog("wuplyer ----  数据包数量 %d", datas.count)
-                    NSLog("wuplyer ----  将数据读出")
-                    self.handlePackets(packets: datas, protocols: nums)
                 }
+                
+//                self.packetFlow.readPackets() { datas, nums in
+//
+//                    NSLog("wuplyer ----  数据包数量 %d", datas.count)
+//                    NSLog("wuplyer ----  将数据读出")
+//                    self.handlePackets(packets: datas, protocols: nums)
+//                }
                 
             }
         }
@@ -149,14 +165,70 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         }
     }
     
+    
+    
+    
+    
+    func handle(packets: [Data], protocols: [NSNumber]) {
+        
+        NSLog("wuplyer ----  数据包的数量:\(packets.count)")
+        
+            for (index, data) in packets.enumerated() {
+                
+                switch protocols[index].int32Value {
+                case AF_INET: /* internetwork: UDP, TCP, etc. */
+                    
+                    if IPPacket.peekProtocol(data) == .udp {
+                         self.udpProxy?.input(packet: data, version: protocols[index])
+                    }
+                    
+                    if IPPacket.peekProtocol(data) == .tcp {
+                        NSLog("wuplyer ----  捕获到TCP 数据")
+                        NSLog("wuplyer ----  tcp数据处理")
+                        self.tcpProxy?.server.ipPacketInput(data)
+                    }
+                    
+                    
+                case AF_INET6: //暂不支持IPV6
+                    break
+                default:
+                    fatalError()
+                }
+            }
+            
+        
+        if #available(iOSApplicationExtension 10.0, *) {
+            self.packetFlow.readPacketObjects { packeArray in
+
+                var dataArray:[Data] = Array()
+                var protocolArray:[sa_family_t] = Array()
+                for (_, packe) in packeArray.enumerated() {
+                    NSLog("wuplyer ----  数据包的来源")
+                    let meta = packe.metadata
+                    NSLog("wuplyer ----  数据包的来源:\(String(describing: packe.metadata?.sourceAppSigningIdentifier))")
+                    dataArray.append(packe.data)
+                    protocolArray.append(packe.protocolFamily)
+                }
+                self.handle(packets: dataArray, protocols: protocolArray as [NSNumber])
+                dataArray.removeAll()
+                protocolArray.removeAll()
+            }
+        } else {
+            
+        }
+    }
+    
+    
     func handlePackets(packets: [Data], protocols: [NSNumber]) {
+        
+        NSLog("wuplyer ----  数据包的数量:\(packets.count)")
+    
         for (index, data) in packets.enumerated() {
             
             switch protocols[index].int32Value {
             case AF_INET: /* internetwork: UDP, TCP, etc. */
                 
                 if IPPacket.peekProtocol(data) == .udp {
-                    
                      self.udpProxy?.input(packet: data, version: protocols[index])
                 }
                 
@@ -173,6 +245,10 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
                 fatalError()
             }
         }
+        
+        
+        
+        
         self.packetFlow.readPackets { datas, numbers in
             self.handlePackets(packets: datas, protocols: numbers)
         }

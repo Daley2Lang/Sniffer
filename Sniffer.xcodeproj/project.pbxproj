@@ -28,6 +28,7 @@
 		7876D4BA2502453500B87C46 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7876D4B92502451F00B87C46 /* libresolv.tbd */; };
 		7879D285250F6E19001A53A3 /* AdapterFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879D284250F6E19001A53A3 /* AdapterFactory.swift */; };
 		7879D287250F6ECB001A53A3 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879D286250F6ECB001A53A3 /* Utils.swift */; };
+		7879D2892510BF75001A53A3 /* TUNInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7879D2882510BF75001A53A3 /* TUNInterface.swift */; };
 		788A03E324D2558300B01AE7 /* ZPTCPIPStack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3BAE1501F653FA200A349CA /* ZPTCPIPStack.framework */; };
 		788A03E424D2558300B01AE7 /* ZPTCPIPStack.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D3BAE1501F653FA200A349CA /* ZPTCPIPStack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		789888662507A1AD00B66153 /* ZPTCPBridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 789888642507A1AD00B66153 /* ZPTCPBridge.h */; };
@@ -295,6 +296,7 @@
 		7876D4B92502451F00B87C46 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/usr/lib/libresolv.tbd; sourceTree = DEVELOPER_DIR; };
 		7879D284250F6E19001A53A3 /* AdapterFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdapterFactory.swift; sourceTree = "<group>"; };
 		7879D286250F6ECB001A53A3 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		7879D2882510BF75001A53A3 /* TUNInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TUNInterface.swift; sourceTree = "<group>"; };
 		788A03DB24D174F800B01AE7 /* Sniffer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sniffer.entitlements; sourceTree = "<group>"; };
 		789888642507A1AD00B66153 /* ZPTCPBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZPTCPBridge.h; sourceTree = "<group>"; };
 		789888652507A1AD00B66153 /* ZPTCPBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZPTCPBridge.m; sourceTree = "<group>"; };
@@ -666,6 +668,7 @@
 				D35240321F4BECE8006656F0 /* HTTPConnection.swift */,
 				D35240381F4D3091006656F0 /* TCPProxyServer.swift */,
 				D35240371F4D3091006656F0 /* TCPConnection.swift */,
+				7879D2882510BF75001A53A3 /* TUNInterface.swift */,
 				789888E4250A135400B66153 /* Opt.swift */,
 				D379F65A1F590701007784F4 /* SessionManager.swift */,
 				D352401F1F4BD0E5006656F0 /* Info.plist */,
@@ -1225,6 +1228,7 @@
 				78D5E5A9250CC62200BE6160 /* IPRangeListRule.swift in Sources */,
 				7879D287250F6ECB001A53A3 /* Utils.swift in Sources */,
 				D35240391F4D3091006656F0 /* TCPConnection.swift in Sources */,
+				7879D2892510BF75001A53A3 /* TUNInterface.swift in Sources */,
 				78D5E598250B78EA00BE6160 /* DNSMessage.swift in Sources */,
 				789888F5250A3D8700B66153 /* IPAddress.swift in Sources */,
 				D379F6581F58FCC4007784F4 /* SessionModel.swift in Sources */,
