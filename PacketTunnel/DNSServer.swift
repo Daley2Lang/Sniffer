@@ -5,7 +5,7 @@ import NetworkExtension
 /// A DNS server designed as an `IPStackProtocol` implementation which works with TUN interface.
 ///
 /// This class is thread-safe.
-open class DNSServer: DNSResolverDelegate, IPStackProtocol {
+open class DNSServer:  IPStackProtocol {
     /// Current DNS server.
     ///
     /// - warning: 最多同时运行一台DNS服务器。如果DNS服务器注册到`TUNInterface`，则也必须在此处设置它。
@@ -25,7 +25,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
 
     open var outputFunc: (([Data], [NSNumber]) -> Void)!
 
-    // Only match A record as of now, all other records should be passed directly.
+    // 到目前为止，仅匹配A记录，所有其他记录应直接传递。
     fileprivate let matchedType = [DNSType.a]
 
     /**
@@ -34,6 +34,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
      -参数端口：服务器的侦听端口。
      -参数fakeIPPool：假IP地址池。 如果不需要伪造IP，则设置为nil。
      */
+    // 
     public init(address: IPAddress, port: Port, fakeIPPool: IPPool? = nil) {
         serverAddress = address
         serverPort = port
@@ -41,10 +42,9 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
     }
 
     /**
-     Clean up fake IP.
-
-     - parameter address: The fake IP address.
-     - parameter delay:   How long should the fake IP be valid.
+     清理假IP。
+     -参数地址：假IP地址。
+     -参数延迟：假IP有效期为多长时间。
      */
     fileprivate func cleanUpFakeIP(_ address: IPAddress, after delay: Int) {
         queue.asyncAfter(deadline: DispatchTime.now() + Double(Int64(delay) * Int64(NSEC_PER_SEC)) / Double(NSEC_PER_SEC)) {
@@ -73,13 +73,13 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             lookupRemotely(session)
             return
         }
-
+        
         RuleManager.currentManager.matchDNS(session, type: .domain)
 
         switch session.matchResult! {
         case .fake:
             guard setUpFakeIP(session) else {
-                // failed to set up a fake IP, return the result directly
+                // 设置错误的IP失败，直接返回结果
                 session.matchResult = .real
                 lookupRemotely(session)
                 return
@@ -104,15 +104,15 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         }
     }
 
+    //MARK: IPStackProtocol 实现
     /**
-     Input IP packet into the DNS server.
-
-     - parameter packet:  The IP packet.
-     - parameter version: The version of the IP packet.
-
-     - returns: If the packet is taken in by this DNS server.
+     将IP数据包输入到DNS服务器。
+     -参数包：IP包。
+     -参数版本：IP数据包的版本。
+     -返回：如果数据包被此DNS服务器接收。
      */
     open func input(packet: Data, version: NSNumber?) -> Bool {
+        
         guard IPPacket.peekProtocol(packet) == .udp else {
             return false
         }
@@ -124,6 +124,19 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         guard IPPacket.peekDestinationPort(packet) == serverPort else {
             return false
         }
+
+        let desPort =  IPPacket.peekDestinationPort(packet)
+        let desiIP =  IPPacket.peekDestinationAddress(packet)
+        
+        let sourceIP = IPPacket.peekSourceAddress(packet)
+        let sourcePort = IPPacket.peekSourcePort(packet)
+        
+        
+        NSLog("wuplyer ----  捕获到DNS UDP 源IP:\(String(describing: sourceIP))")
+        NSLog("wuplyer ----  捕获到DNS UDP 源端口:\(String(describing: sourcePort))")
+        NSLog("wuplyer ----  捕获到DNS UDP 目标IP:\(String(describing: desiIP))")
+        NSLog("wuplyer ----  捕获到DNS UDP 目标端口:\(desPort ?? 9527)")
+        
 
         guard let ipPacket = IPPacket(packetData: packet) else {
             return false
@@ -188,6 +201,8 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         ipPacket.transportProtocol = .udp
         ipPacket.buildPacket()
 
+        
+         NSLog("wuplyer ----  将DNS 解析信息 返回")
         outputFunc([ipPacket.packetData], [NSNumber(value: AF_INET as Int32)])
     }
 
@@ -209,7 +224,6 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
 
     /**
      Add new DNS resolver to DNS server.
-
      - parameter resolver: The resolver to add.
      */
     open func registerResolver(_ resolver: DNSResolverProtocol) {
@@ -231,27 +245,37 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
         return true
     }
 
+    
+    
+
+}
+
+extension DNSServer :DNSResolverDelegate{
     open func didReceive(rawResponse: Data) {
+        
+        let str = String.init(data: rawResponse, encoding: .utf8)
+        NSLog("wuplyer ----  DNS 服务端信息 收到回应信息：\(String(describing: str))")
+        
         guard let message = DNSMessage(payload: rawResponse) else {
-            NSLog("Failed to parse response from remote DNS server.")
+            NSLog("wuplyer ----  无法解析来自远程DNS服务器的响应。")
             return
         }
-
+        
         queue.async {
             guard let session = self.pendingSessions.removeValue(forKey: message.transactionID) else {
-                // this should not be a problem if there are multiple DNS servers or the DNS server is hijacked.
-                NSLog("Do not find the corresponding DNS session for the response.")
+                // 如果有多个DNS服务器或DNS服务器被劫持，这应该不是问题。 ？？？？
+                NSLog("wuplyer ----  找不到响应的相应DNS会话")
                 return
             }
-
+            
             session.realResponseMessage = message
-
+            
             session.realIP = message.resolvedIPv4Address
-
+            
             if session.matchResult != .fake && session.matchResult != .real {
                 RuleManager.currentManager.matchDNS(session, type: .ip)
             }
-
+            
             switch session.matchResult! {
             case .fake:
                 if !self.setUpFakeIP(session) {
@@ -262,7 +286,7 @@ open class DNSServer: DNSResolverDelegate, IPStackProtocol {
             case .real:
                 self.outputSession(session)
             default:
-                NSLog("The rule match result should never be .Pass or .Unknown in IP mode.")
+                NSLog("wuplyer ---- 在IP模式下，规则匹配结果不得为.Pass或.Unknown。")
             }
         }
     }

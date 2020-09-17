@@ -33,7 +33,6 @@
 - (instancetype)initWithRawData:(NSData *)rawData {
     if (self = [super init]) {
         self.rawData = rawData;
-        
         // auto parse
         NSError *error = nil;
         BOOL flag = [self parse:&error];
@@ -45,7 +44,7 @@
 }
 
 
-// parse ip header and payload
+// 解析ip标头和有效负载
 - (BOOL)parse:(NSError **)error {
     
     NSData *data = self.rawData;
@@ -56,10 +55,11 @@
         return NO;
     }
     
+//   协议 17是udp，6是tcp
     // first byte
     Byte firstByte = bytes[0];
-    UInt8 ihl     = IP_VHL_HL(firstByte);         // 获取IP报文头部长度 单位32bit
-    UInt8 version = IP_VHL_V(firstByte);          // 获取版本号
+    UInt8 ihl     = IP_VHL_HL(firstByte);         // 获取IP报文头部长度f 单位32bit
+    UInt8 version = IP_VHL_V(firstByte);          // 获取版本号 //(vhl) >> 4  //6是ipv6  4是ipv4
     if (version == 6) {
         // unsupport ipv6
         NSError *err = [NSError errorWithDomain:IPErrorDomainName code:IPErrorCodeUnsupport userInfo:@{NSLocalizedDescriptionKey: @"unsupport ipv6"}];

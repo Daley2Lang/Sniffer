@@ -34,7 +34,7 @@ err_t netif_output(struct pbuf *p, BOOL is_ipv4)
     NSArray *numbers = [NSArray arrayWithObject:ipVersion];
     
     //block 数据回调
-    ZPPacketTunnel.shared.output(datas, numbers);
+    ZPPacketTunnel.shared.output(datas, numbers);  
     
     return ERR_OK;
 }
@@ -319,7 +319,7 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
 // 数据输入
 - (err_t)ipPacketInput:(NSData *)data
 {
-    NSLog(@"wuplyer ----  数据输入 ipPacketInput");
+    NSLog(@"wuplyer ---- TCP 数据包输入 ");
     NSAssert(data.length <= _netif.mtu, @"error in data length or mtu value");
     
     /* copy data bytes to pbuf */

@@ -72,22 +72,38 @@
             endingLineNumber = "30"
             landmarkName = "loadAllFromPreferences(completionHandler:)"
             landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "5C901AEC-6A6C-4290-A941-C6CDADB9705D"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PacketTunnel/TCPProxyServer.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "tunnel(_:didEstablishNewTCPConnection:)"
-            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "BB28888F-DD64-45D6-87FC-5CA2C491F35D - 883a333ed7a41766"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;__C.NETunnelProviderManager&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Sniffer.TunnelManager.loadAllFromPreferences(completionHandler: () -&gt; ()) -&gt; ()"
+                  moduleName = "Sniffer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/qiliu/Desktop/Sniffer/Sniffer/TunnelManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "30"
+                  endingLineNumber = "30"
+                  offsetFromSymbolStart = "1440">
+               </Location>
+               <Location
+                  uuid = "BB28888F-DD64-45D6-87FC-5CA2C491F35D - ecf5057151abce39"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in closure #1 (Swift.Optional&lt;Swift.Array&lt;__C.NETunnelProviderManager&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Sniffer.TunnelManager.loadAllFromPreferences(completionHandler: () -&gt; ()) -&gt; ()"
+                  moduleName = "Sniffer"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/qiliu/Desktop/Sniffer/Sniffer/TunnelManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "31"
+                  endingLineNumber = "31"
+                  offsetFromSymbolStart = "152">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -100,8 +116,8 @@
             filePath = "PacketTunnel/PacketTunnelProvider.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "212"
-            endingLineNumber = "212"
+            startingLineNumber = "218"
+            endingLineNumber = "218"
             landmarkName = "handle(packets:protocols:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -116,8 +132,8 @@
             filePath = "PacketTunnel/PacketTunnelProvider.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "32"
-            endingLineNumber = "32"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
             landmarkName = "startTunnel(options:completionHandler:)"
             landmarkType = "7">
          </BreakpointContent>

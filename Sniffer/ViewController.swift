@@ -96,8 +96,7 @@ class ViewController: UIViewController {
                        return
                    }
                    let dataStr = String.init(data: data!, encoding: String.Encoding.utf8)
-                   
-//                   let dic  =  self.stringValueDic(dataStr!)
+                   let dic  =  self.stringValueDic(dataStr!)
                 
                    if Thread.isMainThread {
                        self.infoView.text = dataStr
@@ -107,7 +106,7 @@ class ViewController: UIViewController {
                        }
                    }
                    
-                   print("收到的数据：\(dataStr!)")
+                   print("收到的数据：\(dic!)")
                    
                }
                
@@ -152,6 +151,14 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let numbers = [1, 2, 3, 4]
+        let numberSum = numbers.reduce(0, { x, y in
+            x + y
+        })
+        
+        NSLog("累加的值 \(numberSum)")
+        
         
         //        NotificationCenter.default.addObserver(
         //            self,
@@ -319,8 +326,6 @@ extension ViewController:GCDAsyncUdpSocketDelegate{
         DispatchQueue.main.async {
             self.infoView.text = String.init(format: "来自服务端的回应:%@", str!)
         }
-        
-        
         
     }
 }

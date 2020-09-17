@@ -21,7 +21,7 @@ open class DNSMessage {
     var payload: Data!
 
     var bytesLength: Int {
-        var len = 12 + queries.reduce(0) {
+        var len = 12 + queries.reduce(0) {  //累加
             $0 + $1.bytesLength
         }
         len += answers.reduce(0) {
@@ -65,7 +65,7 @@ open class DNSMessage {
         }
 
         // ignore OP code
-
+        //分别取出 后 3,2,1位的值
         authoritative = bytes & 0x04 > 0
         truncation = bytes & 0x02 > 0
         recursionDesired = bytes & 0x01 > 0
@@ -75,7 +75,7 @@ open class DNSMessage {
         if let status = DNSReturnStatus(rawValue: bytes & 0x0F) {
             self.status = status
         } else {
-            NSLog("Received DNS response with unknown status: \(bytes & 0x0F).")
+            NSLog("收到状态未知的DNS响应: \(bytes & 0x0F).")
             self.status = .serverFailure
         }
 

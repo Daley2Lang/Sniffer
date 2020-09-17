@@ -6,18 +6,18 @@ public enum IPRangeError: Error {
 
 public class IPRange {
     public let startIP: IPAddress
-    // including, so we can include 255.255.255.255 in range.
+    // 包括在内，因此我们可以在范围内包含255.255.255.255。
     public let endIP: IPAddress
 
     public let family: IPAddress.Family
 
     public init(startIP: IPAddress, endIP: IPAddress) throws {
         guard startIP.family == endIP.family else {
-            throw IPRangeError.addressIncompatible
+            throw IPRangeError.addressIncompatible //地址不兼容
         }
 
         guard startIP <= endIP else {
-            throw IPRangeError.invalidRange
+            throw IPRangeError.invalidRange //无效范围
         }
 
         self.startIP = startIP
@@ -27,7 +27,7 @@ public class IPRange {
 
     public convenience init(startIP: IPAddress, interval: IPInterval) throws {
         guard let endIP = startIP.advanced(by: interval) else {
-            throw IPRangeError.intervalInvalid
+            throw IPRangeError.intervalInvalid //间隔无效
         }
 
         try self.init(startIP: startIP, endIP: endIP)
@@ -35,7 +35,7 @@ public class IPRange {
 
     public convenience init(startIP: IPAddress, mask: IPMask) throws {
         guard let (startIP, endIP) = mask.mask(baseIP: startIP) else {
-            throw IPRangeError.invalidMask
+            throw IPRangeError.invalidMask //无效的掩码
         }
 
         try self.init(startIP: startIP, endIP: endIP)

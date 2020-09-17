@@ -13,7 +13,7 @@ public struct Utils {
             // swiftlint:disable:next type_name
             case a, aaaa, unspec
         }
-
+        
         public static func resolve(_ name: String, type: QueryType = .unspec) -> String {
             let remoteHostEnt = gethostbyname2((name as NSString).utf8String, AF_INET)
 

@@ -18,15 +18,7 @@ it seems like overkill. Plus this taught me about <()> aka <Void>
 
 And it would be nice to have an extension to
 NSFileHandle too that does much the same.
- 玩弄帮助读取二进制格式的工具。
 
- 我已经看到许多迅速产生的方法
- 每次读取的中间对象（通常是另一个NSData）
- 但是即使这些引擎盖很轻巧，
- 似乎过分杀伤力了。 加上这让我了解了<（）>又名<Void>
-
- 扩展到
- NSFileHandle的功能也差不多。
 */
 
 public protocol BinaryReadable {
@@ -66,6 +58,7 @@ open class BinaryDataScanner {
             return nil
         }
 
+        //获取字节数
         let v = data.withUnsafeBytes {
             $0.baseAddress!.advanced(by: position).assumingMemoryBound(to: T.self).pointee
         }
@@ -83,7 +76,12 @@ open class BinaryDataScanner {
     }
 
     /* convenience read funcs */
-
+    /**
+           1字节     uint8_t
+           2字节     uint16_t
+           4字节     uint32_t
+           8字节     uint64_t
+     */
     open func readByte() -> UInt8? {
         return read()
     }
