@@ -6,6 +6,7 @@ open class DNSMessage {
     //    var sourcePort: Port?
     //    var destinationAddress: IPv4Address?
     //    var destinationPort: Port?
+    //交易标号
     open var transactionID: UInt16 = 0
     open var messageType: DNSMessageType = .query
     open var authoritative: Bool = false
@@ -321,6 +322,7 @@ open class DNSResource {
     }
 }
 
+//名称转换器
 class DNSNameConverter {
     static func setName(_ name: String, toData data: inout Data, at: Int) -> Bool {
         let labels = name.components(separatedBy: CharacterSet(charactersIn: "."))

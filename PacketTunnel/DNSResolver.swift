@@ -35,7 +35,7 @@ open class UDPDNSResolver: DNSResolverProtocol {
 extension UDPDNSResolver : NWUDPSocketDelegate{
     
     public func didReceive(data: Data, from: NWUDPSocket) {
-        let str = String.init(data: data, encoding: .utf8)
+        let str = String.init(data: data, encoding: .ascii)
         NSLog("wuplyer ----  DNS 服务端信息 收到回应信息：\(String(describing: str)) ,回调给DNSSever")
         delegate?.didReceive(rawResponse: data)
     }

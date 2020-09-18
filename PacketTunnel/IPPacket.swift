@@ -229,7 +229,7 @@ open class IPPacket {
         return Port(bytesInNetworkOrder: (data as NSData).bytes.advanced(by: headerLength + 2))
     }
     
-    
+    //计算伪头校验和
     func computePseudoHeaderChecksum() -> UInt32 {
         var result: UInt32 = 0
         if let address = sourceAddress {
@@ -243,7 +243,43 @@ open class IPPacket {
         return result
     }
     
+    //构建ip数据包
     func buildPacket() {
+        
+        /*                                IP数据包 构成
+        --------+----------+----------------------+------------------------------------------             --+
+                |          |                      |                                                         |
+        4位版本号 | 4位部首长度|8位服务类型（TOS）       |             16位总字节长度                               |
+                |          |                      |
+        --------+----------+----------------------+------------------------------------------               |
+                                                  |       |
+                16位标识                           | 3位标志|        13位片偏移                                |
+                                                  |       |
+        --------+----------+----------------------+------------------------------------------               |
+                           |                      |
+            8位生存时间（TTL）|      8位协议          |             16位部首校验和                                |====》 20字节
+                           |                      |
+        --------+----------+----------------------+------------------------------------------               |
+      
+                                        32位源IP地址                                                         |
+         
+        --------+----------+----------------------+------------------------------------------               |
+     
+                                        32位目的IP地址                                                        |
+         
+        --------+----------+----------------------+------------------------------------------            ——-+
+     
+                                        32位选项（若有）
+         
+        --------+----------+----------------------+------------------------------------------
+        
+                                          数据
+         
+        --------+----------+----------------------+------------------------------------------
+     
+         
+         */
+        
         packetData = NSMutableData(length: Int(headerLength) + protocolParser.bytesLength) as Data?
         
         // 构建包头
@@ -262,7 +298,7 @@ open class IPPacket {
         // let TCP or UDP packet build
         protocolParser.packetData = packetData
         protocolParser.offset = Int(headerLength)
-        protocolParser.buildSegment(computePseudoHeaderChecksum())
+        protocolParser.buildSegment(computePseudoHeaderChecksum())//计算伪头校验和
         packetData = protocolParser.packetData
         
         setPayloadWithUInt16(Checksum.computeChecksum(packetData, from: 0, to: Int(headerLength)), at: 10, swap: false)
@@ -270,7 +306,7 @@ open class IPPacket {
     
     func setPayloadWithUInt8(_ value: UInt8, at: Int) {
         var v = value
-        withUnsafeBytes(of: &v) {
+        withUnsafeBytes(of: &v) {//通过withUnsafeBytes获取可变原生缓冲类型指针，可获取到rich中每个字节的值
             packetData.replaceSubrange(at..<at+1, with: $0)
         }
     }

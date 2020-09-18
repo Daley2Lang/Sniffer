@@ -89,8 +89,11 @@ class ViewController: UIViewController {
     @IBAction func requestHost(_ sender: Any) {
         
         let session  = URLSession.shared
-               let url = URL.init(string: "http://api.codertopic.com/itapi/questionsapi/questions.php?typeID=10")
-               
+//               let url = URL.init(string: "http://api.codertopic.com/itapi/questionsapi/questions.php?typeID=10")
+                let url = URL.init(string: "http://imdns.hpplay.cn/Author/GetImServer?uid=7092130147765849530&appid=13578&token=fd8f68259fada2b11600422603")
+        
+//        http://p9-xg.byteimg.com/img/tos-cn-i-0004/e3054ac894ce4211ae090c21d002a1ef~c5_q75_864x486.webp
+        
                let dataTask = session.dataTask(with: url!) { (data, res, error) in
                    guard error == nil else{
                        return
@@ -159,6 +162,8 @@ class ViewController: UIViewController {
         
         NSLog("累加的值 \(numberSum)")
         
+        
+        ponteeTest()
         
         //        NotificationCenter.default.addObserver(
         //            self,
@@ -258,6 +263,36 @@ class ViewController: UIViewController {
         }
     }
     
+    
+    func ponteeTest()  -> Void {
+        struct Rich {
+            var money: Int
+            var isRich: Bool
+        }
+        var rich = Rich(money: 99999999, isRich: true)
+//        通过withUnsafeBytes获取可变原生缓冲类型指针，可获取到rich中每个字节的值
+        withUnsafeBytes(of: &rich) { bytes in
+            
+            print("输出bytes: \(bytes)")
+            
+            for byte in bytes {
+                print("使劲输出 \(byte)")
+            }
+        }
+        print("---------------")
+
+//        withUnsafeMutablePointer 获取可变指针
+//        withUnsafeMutableBufferPointer 获取可变缓冲类型指针
+        let richP = withUnsafeMutablePointer(to: &rich) { UnsafeMutableRawPointer($0) }
+        let moneyP = richP.assumingMemoryBound(to: Int.self)
+        moneyP.pointee = 0
+        print("输出money:\(rich.money)")
+        let isRichP = richP.advanced(by: MemoryLayout<Int>.stride).assumingMemoryBound(to: Bool.self)
+        isRichP.pointee = false
+        print(rich.isRich)
+         print("输出isRich:\(rich.isRich)")
+    }
+    
 }
 
 extension ViewController: UITableViewDelegate, UITableViewDataSource {
@@ -328,6 +363,7 @@ extension ViewController:GCDAsyncUdpSocketDelegate{
         }
         
     }
+    
 }
 
 
@@ -341,3 +377,4 @@ class SwitchCell: UITableViewCell {
 }
 
 
+ 

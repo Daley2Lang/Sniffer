@@ -18,7 +18,7 @@ open class DNSSession {
             return nil
         }
         NSLog("wuplyer ----  需要获取CN 信息")
-//        return Utils.GeoIPLookup.Lookup(self.realIP!.presentation)
+//        return Utils.GeoIPLookup.Lookup(self.realIP!.presentation) 暂时不支持
         return ""
     }()
 

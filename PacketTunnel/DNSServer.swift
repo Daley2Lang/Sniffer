@@ -95,7 +95,7 @@ open class DNSServer:  IPStackProtocol {
     fileprivate func lookupRemotely(_ session: DNSSession) {
         pendingSessions[session.requestMessage.transactionID] = session
         cleanUpPendingSession(session, after: Opt.DNSPendingSessionLifeTime)
-        sendQueryToRemote(session)
+        sendQueryToRemote(session) //UDP 请求114.114.114.114
     }
 
     fileprivate func sendQueryToRemote(_ session: DNSSession) {
@@ -125,10 +125,10 @@ open class DNSServer:  IPStackProtocol {
             return false
         }
 
-        let desPort =  IPPacket.peekDestinationPort(packet)
-        let desiIP =  IPPacket.peekDestinationAddress(packet)
+        let desPort    =  IPPacket.peekDestinationPort(packet)
+        let desiIP     = IPPacket.peekDestinationAddress(packet)
         
-        let sourceIP = IPPacket.peekSourceAddress(packet)
+        let sourceIP   = IPPacket.peekSourceAddress(packet)
         let sourcePort = IPPacket.peekSourcePort(packet)
         
         
@@ -137,7 +137,6 @@ open class DNSServer:  IPStackProtocol {
         NSLog("wuplyer ----  捕获到DNS UDP 目标IP:\(String(describing: desiIP))")
         NSLog("wuplyer ----  捕获到DNS UDP 目标端口:\(desPort ?? 9527)")
         
-
         guard let ipPacket = IPPacket(packetData: packet) else {
             return false
         }
@@ -253,7 +252,7 @@ open class DNSServer:  IPStackProtocol {
 extension DNSServer :DNSResolverDelegate{
     open func didReceive(rawResponse: Data) {
         
-        let str = String.init(data: rawResponse, encoding: .utf8)
+        let str = String.init(data: rawResponse, encoding: .ascii)
         NSLog("wuplyer ----  DNS 服务端信息 收到回应信息：\(String(describing: str))")
         
         guard let message = DNSMessage(payload: rawResponse) else {
