@@ -89,15 +89,29 @@ class ViewController: UIViewController {
     @IBAction func requestHost(_ sender: Any) {
         
         let session  = URLSession.shared
-//               let url = URL.init(string: "http://api.codertopic.com/itapi/questionsapi/questions.php?typeID=10")
-                let url = URL.init(string: "http://imdns.hpplay.cn/Author/GetImServer?uid=7092130147765849530&appid=13578&token=fd8f68259fada2b11600422603")
+               let url = URL.init(string: "http://api.codertopic.com/itapi/questionsapi/questions.php?typeID=10")
+//                   49    1.028199    10.0.0.93    123.56.237.10    HTTP    286    GET /itapi/questionsapi/questions.php?typeID=10 HTTP/1.1
+//        88    4.064181    10.0.0.93    123.56.237.10    HTTP    341    GET http://api.codertopic.com/itapi/questionsapi/questions.php?typeID=10 HTTP/1.1
+        
+        let str = getIPAddress(domainName: "api.codertopic.com")
+        
+        NSLog("当前域名的 IP 地址:%@", str ?? "")
+        
+        
+//                let url = URL.init(string: "http://imdns.hpplay.cn/Author/GetImServer?uid=7092130147765849530&appid=13578&token=fd8f68259fada2b11600422603")
         
 //        http://p9-xg.byteimg.com/img/tos-cn-i-0004/e3054ac894ce4211ae090c21d002a1ef~c5_q75_864x486.webp
         
                let dataTask = session.dataTask(with: url!) { (data, res, error) in
                    guard error == nil else{
+                    
+                    NSLog("请求错误信息:\(String(describing: error))")
+                    
                        return
                    }
+                
+                    
+                
                    let dataStr = String.init(data: data!, encoding: String.Encoding.utf8)
                    let dic  =  self.stringValueDic(dataStr!)
                 
@@ -363,6 +377,26 @@ extension ViewController:GCDAsyncUdpSocketDelegate{
         }
         
     }
+    
+    // 域名解析
+     func getIPAddress(domainName: String) -> String {
+     var result = ""
+         let host = CFHostCreateWithName(nil,domainName as CFString).takeRetainedValue()
+         CFHostStartInfoResolution(host, .addresses, nil)
+         var success: DarwinBoolean = false
+         if let addresses = CFHostGetAddressing(host, &success)?.takeUnretainedValue() as NSArray?,
+             let theAddress = addresses.firstObject as? NSData {
+             var hostname = [CChar](repeating: 0, count: Int(NI_MAXHOST))
+             if getnameinfo(theAddress.bytes.assumingMemoryBound(to: sockaddr.self), socklen_t(theAddress.length),
+                            &hostname, socklen_t(hostname.count), nil, 0, NI_NUMERICHOST) == 0 {
+                 let numAddress = String(cString: hostname)
+                 result = numAddress
+                 print(numAddress)
+             }
+         }
+         return result
+     }
+
     
 }
 

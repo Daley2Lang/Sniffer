@@ -72,11 +72,7 @@ public class NWUDPSocket: NSObject {
             }
             }, maxDatagrams: 32)
         
-        
-        
     }
-    
-    
     
     //UDPSession 观察者处理
     public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {

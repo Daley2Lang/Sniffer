@@ -38,10 +38,7 @@ class TCPConnection: NSObject {
             self.close(with: "Local TCP has aborted before connecting remote.")
             return nil
         }
-        self.remote.synchronouslySetDelegate(
-            self,
-            delegateQueue: queue
-        )
+        self.remote.synchronouslySetDelegate( self, delegateQueue: queue)
         
         /* session */
         self.sessionModel.date = Date().timeIntervalSince1970
@@ -56,8 +53,9 @@ class TCPConnection: NSObject {
         self.addSessionToManager()
         
         do {
-            try self.remote.connect(toHost: self.local.destAddr,onPort: self.local.destPort
-            )
+            
+//             NSLog("wuplyer TCP---- 远程开始连接，目标ip：\(self.local.destAddr),目标端口:\(self.local.destPort)")
+            try self.remote.connect(toHost: self.local.destAddr,onPort: self.local.destPort)
         } catch {
             self.close(with: "\(error)")
         }
@@ -151,6 +149,11 @@ extension TCPConnection: GCDAsyncSocketDelegate {
     }
 
     func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
+        
+        
+        let str = String.init(data: data, encoding: .utf8)
+        NSLog("wuplyer TCP---- TCP接受远程的数据:\(str ?? "")")
+        
         /* session */
         self.sessionModel.downloadTraffic += data.count
         self.local.write(data)

@@ -15,7 +15,6 @@ class HTTPProxyServer: NSObject {
     
     fileprivate var index: Int = 0
     
-    
     fileprivate var connections: Set<HTTPConnection> = []
     
     override init() {
@@ -47,20 +46,14 @@ extension HTTPProxyServer: GCDAsyncSocketDelegate {
     
     func socket(_ sock: GCDAsyncSocket, didAcceptNewSocket newSocket: GCDAsyncSocket) {
         
-        NSLog("wuplyer ----  通道开启接收到新的socket 链接")
-        
-        NSLog("wuplyer ----  socket local host:%@", newSocket.localHost!)
-        NSLog("wuplyer ----  socket local port:%d", newSocket.localPort)
-        
-        NSLog("wuplyer ----  socket connected host:%@", newSocket.connectedHost!)
-        NSLog("wuplyer ----  socket connected port:%d", newSocket.connectedPort)
+        NSLog("wuplyer http----  通道开启接收到新的socket 链接")
+        NSLog("wuplyer http----  socket local host:%@", newSocket.localHost!)
+        NSLog("wuplyer http----  socket local port:%d", newSocket.localPort)
+        NSLog("wuplyer http----  socket connected host:%@", newSocket.connectedHost!)
+        NSLog("wuplyer http----  socket connected port:%d", newSocket.connectedPort)
         
         
-        let conn: HTTPConnection = HTTPConnection(
-            index: self.index,
-            incomingSocket: newSocket,
-            server: self
-        )
+        let conn: HTTPConnection = HTTPConnection(index: self.index,incomingSocket: newSocket,server: self)
         self.index += 1
         self.connections.insert(conn)
     }

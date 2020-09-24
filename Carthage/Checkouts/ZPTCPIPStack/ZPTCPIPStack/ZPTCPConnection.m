@@ -328,10 +328,10 @@ void zp_tcp_err(void *arg, err_t err)
     });
 }
 
+//远程SOCKET 获取的数据将写回
 - (void)write:(NSData *)data
 {
     
- 
     dispatch_async(_timerQueue, ^{
         struct tcp_pcb *pcb = _block->pcb;
         if (pcb == NULL || _block->close_after_writing) {

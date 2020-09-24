@@ -53,7 +53,7 @@ err_t netif_output_ip6(struct netif *netif, struct pbuf *p, const ip6_addr_t *ip
 void
 tcp_input_pre(struct pbuf *p, struct netif *inp)
 {
-    NSLog(@"wuplyer ----  调用:tcp_input_pre");
+    NSLog(@"wuplyer TCP----  调用:tcp_input_pre");
     
     u8_t hdrlen_bytes;
     
@@ -216,19 +216,20 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
     NSString *identifie = [NSString stringWithFormat:@"%@-%d-%@-%d", src_addr_str, tcphdr->src, dest_addr_str, tcphdr->dest];
     
     
-    if (identifie) {
-        NSLog(@"wuplyer ----  当前数据的源ip:%@,源端口:%d-----目标ip:%@,目标端口:%d",src_addr_str, tcphdr->src, dest_addr_str, tcphdr->dest);
-    }
+ 
     
     //
     ZPTCPConnection *conn = [ZPPacketTunnel.shared connectionForKey:identifie];
     if (conn) {
-        NSLog(@"wuplyer ----  已有 ZPTCPConnection 对象");
+//        NSLog(@"wuplyer TCP----  已有 ZPTCPConnection 对象");
         [conn tcpInputWith:ip_data
                    tcpInfo:tcpInfo
                       pbuf:p];
     } else {
-         NSLog(@"wuplyer ----  没有 ZPTCPConnection 对象,创建新的对象");
+        if (identifie) {
+             NSLog(@"wuplyer TCP----  当前数据的源ip:%@,源端口:%d-----目标ip:%@,目标端口:%d",src_addr_str, tcphdr->src, dest_addr_str, tcphdr->dest);
+         }
+//         NSLog(@"wuplyer TCP----  没有 ZPTCPConnection 对象,创建新的对象");
         conn = [ZPTCPConnection newTCPConnectionWith:ZPPacketTunnel.shared
                                            identifie:identifie
                                               ipData:&ip_data
@@ -288,8 +289,8 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
 //开始
 -(void)ipv4SettingWithAddress:(NSString *)addr netmask:(NSString *)netmask
 {
-    NSLog(@"wuplyer ----  tcp 开启的地址%@",addr);
-    NSLog(@"wuplyer ----  tcp 开启的子网掩码%@",netmask);
+    NSLog(@"wuplyer TCP----  tcp 开启的地址%@",addr);
+    NSLog(@"wuplyer TCP----  tcp 开启的子网掩码%@",netmask);
     struct netif *netif = &_netif;
     /* 配置地址 */
     ip4_addr_t ip4_addr;
@@ -328,10 +329,10 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
     NSAssert(pbuf_take(p, data.bytes, data.length) == ERR_OK, @"error in pbuf_take");
     
     if (IP_HDR_GET_VERSION(p->payload) == 6) {
-        NSLog(@"wuplyer ----  IPV6 数据");
+        NSLog(@"wuplyer TCP----  IPV6 数据");
         return ip6_input(p, &_netif);
     } else {
-        NSLog(@"wuplyer ----  IPV4 数据");
+//        NSLog(@"wuplyer TCP----  IPV4 数据");
         return ip4_input(p, &_netif);
     }
 }

@@ -50,8 +50,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         proxySettings.httpServer = NEProxyServer(address: host, port: Int(port))
         proxySettings.httpsServer = NEProxyServer(address: host, port: Int(port))
         proxySettings.autoProxyConfigurationEnabled = false
-        //        proxySettings.httpEnabled = true
-        //        proxySettings.httpsEnabled = true
+                        proxySettings.httpEnabled = true
+                        proxySettings.httpsEnabled = true
         proxySettings.excludeSimpleHostnames = true
         proxySettings.exceptionList = ["192.168.0.0/16",
                                        "10.0.0.0/8",
@@ -134,9 +134,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         self.tcpProxy = TCPProxyServer()
         self.tcpProxy!.server.ipv4Setting( withAddress: settings.ipv4Settings!.addresses[0], netmask: settings.ipv4Settings!.subnetMasks[0])
         let mtuValue = settings.mtu!.uint16Value
-        NSLog("wuplyer ----  最大的mtu值: %d",mtuValue)
         
-
         self.udpProxy = UDProxyServer(packetFlow: self.packetFlow)
         UDProxyServer.TunnelProvider = self
         

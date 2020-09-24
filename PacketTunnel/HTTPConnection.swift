@@ -15,10 +15,10 @@ class HTTPConnection: NSObject {
         
         static let requestHeader: Int   = 1
         static let responseHeader: Int  = 2
-
+        
         static let requestPayload: Int  = 3
         static let responsePayload: Int = 4
-
+        
         static let connectIn: Int       = 5
         static let connectOut: Int      = 6
         
@@ -28,12 +28,12 @@ class HTTPConnection: NSObject {
         
         static let requestHeader: Int   = 1
         static let requestPayload: Int  = 2
-
+        
         static let responseHeader: Int  = 3
         static let responsePayload: Int = 4
-
+        
         static let connectHeader: Int   = 5
-
+        
         static let connectIn: Int       = 6
         static let connectOut: Int      = 7
         
@@ -63,23 +63,17 @@ class HTTPConnection: NSObject {
     
     init(index: Int, incomingSocket: GCDAsyncSocket, server: HTTPProxyServer) {
         self.index = index
-        self.incomingSocket = incomingSocket
-        self.outgoingSocket = GCDAsyncSocket()
+        self.incomingSocket = incomingSocket //接收到的socket
+        self.outgoingSocket = GCDAsyncSocket() //连接目标server的socket
         self.server = server
         super.init()
         let queue: DispatchQueue = DispatchQueue(label: "HTTPConnection.delegateQueue")
-        self.incomingSocket.synchronouslySetDelegate(
-            self,
-            delegateQueue: queue
-        )
-        self.outgoingSocket.synchronouslySetDelegate(
-            self,
-            delegateQueue: queue
-        )
-        self.incomingSocket.readData(
-            withTimeout: 5,
-            tag: readTag.requestHeader
-        )
+        
+        self.incomingSocket.synchronouslySetDelegate(self,delegateQueue: queue)
+        
+        self.outgoingSocket.synchronouslySetDelegate(self,delegateQueue: queue)
+        
+        self.incomingSocket.readData(withTimeout: 5,tag: readTag.requestHeader)
     }
     
     override var hash: Int {
@@ -131,16 +125,19 @@ class HTTPConnection: NSObject {
     
 }
 
-//RemoteSocket handle
+//MARK:delegate extension
 extension HTTPConnection: GCDAsyncSocketDelegate {
     
     func socket(_ sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
         
         assert(self.outgoingSocket == sock, "error in sock")
-        
-        
-        NSLog("wuplyer ----   链接地址%@", sock.connectedHost!)
-        NSLog("wuplyer ----   链接端口%d", sock.connectedPort)
+        if sock == self.outgoingSocket {
+            NSLog("wuplyer http----   成功连接到远程地址%@", sock.connectedHost!)
+            NSLog("wuplyer http----   链接端口%d", sock.connectedPort)
+        }else{
+             NSLog("wuplyer http----   不会吧 incomesocket 的连接就是本地呀")
+        }
+       
         
         /* session */
         self.sessionModel.remoteIP = host
@@ -151,6 +148,10 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
             
             let httpVersion: String = self.requestHeader.requestLine?.version ?? "HTTP/1.1"
             let responseData: Data = "\(httpVersion) 200 Connection Established\r\n\r\n".data(using: .ascii)!
+           
+            let str = String.init(data: responseData, encoding: .utf8)
+            NSLog("wuplyer http---- 写入APP 写入内容 \n%@  ", str ?? "")
+            
             self.incomingSocket.write(
                 responseData,
                 withTimeout: 5,
@@ -165,9 +166,9 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
             /* session status */
             self.sessionModel.status = .sendRequest
             
+            let str = String.init(data: self.requestHeader.rawData, encoding: .utf8)
             
-          let str = String.init(data: self.requestHeader.rawData, encoding: .utf8)
-                    NSLog("wuplyer ---- 写入outgoingSocket 写入输入 \n%@  ", str ?? "")
+            NSLog("wuplyer http---- 写到远程服务端 写入内容 \n%@  ", str ?? "")
             
             self.outgoingSocket.write(
                 self.requestHeader.rawData,
@@ -189,10 +190,20 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
     
     func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
         
-        if data == data {
-            let str = String.init(data: data, encoding: .utf8)
-            NSLog("wuplyer ---- 获得的数据 \n%@  ", str ?? "")
+        if sock == self.incomingSocket {
+            NSLog("wuplyer http---- 数据来自APP")
+        } else{
+            NSLog("wuplyer http---- 数据来自远程")
+            if data == data {
+                let str = String.init(data: data, encoding: .utf8)
+                NSLog("wuplyer http---- 获得的数据 \n%@  ", str ?? "")
+            }
+            
         }
+        
+     
+        
+        NSLog("wuplyer http---- socket tag :\(tag)")
         
         switch tag {
         case readTag.requestHeader:
@@ -227,9 +238,7 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
             
             /* connect remote */
             do {
-                try self.outgoingSocket.connect(
-                    toHost: host, 
-                    onPort: requestHeader.port
+                try self.outgoingSocket.connect(toHost: host, onPort: requestHeader.port
                 )
             } catch {
                 self.close(note: "\(error)")
@@ -265,16 +274,13 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
             self.sessionModel.downloadTraffic += data.count
             
             self.responseHelper.handleHeader(with: responseHeader)
-            self.incomingSocket.write(
-                data,
-                withTimeout: 5,
-                tag: writeTag.responseHeader
-            )
+            
+            self.incomingSocket.write(data, withTimeout: 5,tag: writeTag.responseHeader)
             
         case readTag.responsePayload:
             
             assert(sock == self.outgoingSocket, "error in sock")
-
+            
             /* session */
             self.sessionModel.downloadTraffic += data.count
             

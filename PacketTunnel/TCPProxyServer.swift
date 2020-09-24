@@ -21,7 +21,7 @@ class TCPProxyServer: NSObject ,IPStackProtocol{
         super.init()
         self.server.setDelegate(self, delegateQueue: DispatchQueue(label: "TCPProxyServer.delegateQueue"))
         server.mtu(UInt16(UINT16_MAX)) {(datas, numbers) in
-            NSLog("wuplyer ---- TCP 将数据写进应用")
+            NSLog("wuplyer TCP---- TCP 将数据写进应用")
             guard let _datas: [Data] = datas,let _nums: [NSNumber] = numbers else{return}
             self.outputFunc(_datas , _nums)
         }
@@ -35,7 +35,6 @@ class TCPProxyServer: NSObject ,IPStackProtocol{
     
     
     //MARK: IPStackProtocol 实现
-    
     func start() {}
     
     public var outputFunc: (([Data], [NSNumber]) -> Void)!
@@ -48,7 +47,7 @@ class TCPProxyServer: NSObject ,IPStackProtocol{
             }
         }
         if IPPacket.peekProtocol(packet) == .tcp {
-            NSLog("wuplyer ---- 获取tcp 数据包")
+            NSLog("wuplyer TCP---- 获取tcp 数据包")
             self.server.ipPacketInput(packet)
             return true
         }
@@ -63,11 +62,11 @@ class TCPProxyServer: NSObject ,IPStackProtocol{
 
 extension TCPProxyServer: ZPPacketTunnelDelegate {
     func tunnel(_ tunnel: ZPPacketTunnel, didEstablishNewTCPConnection conn: ZPTCPConnection) {
-        NSLog("wuplyer ----  通道开启接收到新的tcp 链接")
+        NSLog("wuplyer TCP----  通道开启接收到新的tcp 链接")
         if let tcpConn: TCPConnection = TCPConnection( index: self.index,localSocket: conn,server: self)
         {
             self.index += 1
-            NSLog("wuplyer ----  当前任务量%d", self.index)
+            NSLog("wuplyer TCP----  当前任务量%d", self.index)
             self.connections.insert(tcpConn)
         }
     }
