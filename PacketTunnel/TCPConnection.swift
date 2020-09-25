@@ -83,19 +83,7 @@ class TCPConnection: NSObject {
         /* close connection */
         self.local.closeAfterWriting()
         self.remote.disconnectAfterWriting()
-        
-        /* session */
-        self.sessionModel.note = note
-        /* session status */
-        if self.didAddSessionToManager {
-            if note == "EOF" {
-                self.sessionModel.status = .finish
-            } else {
-                self.sessionModel.status = .close
-            }
-        }
-        SessionManager.shared.closedAppend(self.sessionModel)
-        
+    
         self.server?.remove(connection: self)
     }
     
@@ -115,8 +103,8 @@ extension TCPConnection: ZPTCPConnectionDelegate {
     
     func connection(_ connection: ZPTCPConnection, didRead data: Data) {
         
-        /* session */
-        self.sessionModel.uploadTraffic += data.count
+        let str = String.init(data: data, encoding: .utf8)
+        NSLog("wuplyer TCP---- TCP接受 Tunnel 的数据:\(str ?? "")")
         
         //远程soc
         self.remote.write(data, withTimeout: 5, tag: data.count)
@@ -124,16 +112,23 @@ extension TCPConnection: ZPTCPConnectionDelegate {
     }
     
     func connection(_ connection: ZPTCPConnection, didWriteData length: UInt16, sendBuf isEmpty: Bool) {
+        
+        NSLog("wuplyer TCP---- 将数据写入应用之后")
+        
         if isEmpty {
             self.remote.readData(withTimeout: -1, buffer: nil, bufferOffset: 0, maxLength: UInt(UINT16_MAX / 2), tag: 0)
         }
     }
     
     func connection(_ connection: ZPTCPConnection, didCheckWriteDataWithError err: Error) {
+        
+         NSLog("wuplyer TCP---- tun2sock 检查数据错误 链接错误:\(err)")
+        
         self.close(with: "Local write: \(err)")
     }
     
     func connection(_ connection: ZPTCPConnection, didDisconnectWithError err: Error) {
+         NSLog("wuplyer TCP---- tun2sock 断开连接 链接错误:\(err)")
         self.close(with: "Local: \(err)")
     }
     
@@ -154,8 +149,6 @@ extension TCPConnection: GCDAsyncSocketDelegate {
         let str = String.init(data: data, encoding: .utf8)
         NSLog("wuplyer TCP---- TCP接受远程的数据:\(str ?? "")")
         
-        /* session */
-        self.sessionModel.downloadTraffic += data.count
         self.local.write(data)
     }
     

@@ -30,7 +30,7 @@ err_t zp_tcp_sent(void *arg, struct tcp_pcb *tpcb, u16_t len)
     return ERR_OK;
 }
 
-//接受数据
+//接受数据 接受到
 err_t zp_tcp_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
 {
     ZPTCPConnection *conn = (__bridge ZPTCPConnection *)(arg);
@@ -76,10 +76,11 @@ err_t zp_tcp_recv(void *arg, struct tcp_pcb *tpcb, struct pbuf *p, err_t err)
 //连接成功
 err_t zp_tcp_connected(void *arg, struct tcp_pcb *tpcb, err_t err)
 {
+    
     ZPTCPConnection *conn = (__bridge ZPTCPConnection *)(arg);
     LWIP_ASSERT("Must be dispatched on timer queue",
                 dispatch_get_specific(IsOnTimerQueueKey) == (__bridge void *)(conn.timerQueue));
-    [conn.tunnel tcpConnectionEstablished:conn];
+    [conn.tunnel tcpConnectionEstablished:conn]; //链接成功回调
     return ERR_OK;
 }
 //轮询
@@ -290,6 +291,15 @@ void zp_tcp_err(void *arg, err_t err)
         _block->ip_data = ipdata;
         _block->tcpInfo = info;
         tcp_input(pbuf, _block);
+        
+/*
+ * TCP的初始输入处理。 验证TCP标头，多路分解
+  * PCB之间的线段，并将其传递到tcp_process（），该实现
+  * TCP有限状态机。 IP层调用此功能（在
+  * ip_input（））。
+  *
+  * 参数 p 接收要处理的TCP段（p-> payload指向TCP标头）
+ */
     });
 }
 
@@ -349,6 +359,9 @@ void zp_tcp_err(void *arg, err_t err)
             } else {
                 errDomain = @"Unknown error.";//位置错误
             }
+            
+             NSLog(@"wuplyer TCP----  数据写入错误:%@",errDomain);
+            
             NSError *error = [NSError errorWithDomain:errDomain code:err userInfo:NULL];
             dispatch_async(_delegateQueue, ^{
                 if (self.delegate) {

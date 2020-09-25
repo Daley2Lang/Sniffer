@@ -13,7 +13,6 @@
 @interface ZPTCPConnection () {
     
     struct zp_tcp_block tcp_block; /* tcp block instance */
-        
 }
 
 /**

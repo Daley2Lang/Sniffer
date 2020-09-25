@@ -320,7 +320,7 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
 // 数据输入
 - (err_t)ipPacketInput:(NSData *)data
 {
-    NSLog(@"wuplyer ---- TCP 数据包输入 ");
+    NSLog(@"wuplyer TCP----  tunnel 数据包输入 ");
     NSAssert(data.length <= _netif.mtu, @"error in data length or mtu value");
     
     /* copy data bytes to pbuf */
@@ -350,6 +350,7 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
 
 - (ZPTCPConnection *)connectionForKey:(NSString *)key
 {
+    //同步取
     __block ZPTCPConnection *conn = NULL;
     dispatch_sync(_dicQueue, ^{
         conn = [_dic objectForKey:key];
@@ -359,13 +360,14 @@ tcp_input_pre(struct pbuf *p, struct netif *inp)
 
 - (void)setConnection:(ZPTCPConnection *)conn forKey:(NSString *)key
 {
+    //同步存
     dispatch_sync(_dicQueue, ^{
         [_dic setObject:conn forKey:key];
     });
 }
 
 - (void)removeConnectionForKey:(NSString *)key
-{
+{//异步删除
     dispatch_async(_dicQueue, ^{
         [_dic removeObjectForKey:key];
     });

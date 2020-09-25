@@ -132,10 +132,10 @@ open class DNSServer:  IPStackProtocol {
         let sourcePort = IPPacket.peekSourcePort(packet)
         
         
-        NSLog("wuplyer ----  捕获到DNS UDP 源IP:\(String(describing: sourceIP))")
-        NSLog("wuplyer ----  捕获到DNS UDP 源端口:\(String(describing: sourcePort))")
-        NSLog("wuplyer ----  捕获到DNS UDP 目标IP:\(String(describing: desiIP))")
-        NSLog("wuplyer ----  捕获到DNS UDP 目标端口:\(desPort ?? 9527)")
+        NSLog("wuplyer UDP----  捕获到DNS UDP 源IP:\(String(describing: sourceIP))")
+        NSLog("wuplyer UDP----  捕获到DNS UDP 源端口:\(String(describing: sourcePort))")
+        NSLog("wuplyer UDP----  捕获到DNS UDP 目标IP:\(String(describing: desiIP))")
+        NSLog("wuplyer UDP----  捕获到DNS UDP 目标端口:\(desPort ?? 9527)")
         
         guard let ipPacket = IPPacket(packetData: packet) else {
             return false

@@ -77,7 +77,6 @@ open class TUNInterface {
     // 写入app 的block 回调
     fileprivate func generateOutputBlock() -> ([Data], [NSNumber]) -> Void {
         return { [weak self] packets, versions in
-            NSLog("wuplyer ---- 将数据写回app")
             self?.packetFlow?.writePackets(packets, withProtocols: versions)
         }
     }

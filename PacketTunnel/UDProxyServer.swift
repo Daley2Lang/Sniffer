@@ -91,9 +91,9 @@ public class UDProxyServer:IPStackProtocol {
         let sourcePort = IPPacket.peekSourcePort(packetData)
         
         
-        NSLog("wuplyer ----  捕获到UDP 源IP:\(String(describing: sourceIP))")
-        NSLog("wuplyer ----  捕获到UDP 源端口:\(String(describing: sourcePort))")
-        NSLog("wuplyer ----  捕获到UDP 目标IP:\(String(describing: desiIP))")
+        NSLog("wuplyer ----  捕获到UDP 源IP:\(sourceIP)")
+        NSLog("wuplyer ----  捕获到UDP 源端口:\(sourcePort ?? 9527)")
+        NSLog("wuplyer ----  捕获到UDP 目标IP:\( desiIP)")
         NSLog("wuplyer ----  捕获到UDP 目标端口:\(desPort ?? 9527)")
                    
                    
@@ -198,7 +198,7 @@ extension UDProxyServer :NWUDPSocketDelegate{
         packet.transportProtocol = .udp
         packet.buildPacket()
         
-         NSLog("wuplyer ---- 将数据写进app")
+         NSLog("wuplyer UDP---- 将数据写进app")
         
         outputFunc([packet.packetData], [NSNumber(value: AF_INET as Int32)])
     }

@@ -21,7 +21,7 @@ class TCPProxyServer: NSObject ,IPStackProtocol{
         super.init()
         self.server.setDelegate(self, delegateQueue: DispatchQueue(label: "TCPProxyServer.delegateQueue"))
         server.mtu(UInt16(UINT16_MAX)) {(datas, numbers) in
-            NSLog("wuplyer TCP---- TCP 将数据写进应用")
+            NSLog("wuplyer TCP---- 将数据写进应用")
             guard let _datas: [Data] = datas,let _nums: [NSNumber] = numbers else{return}
             self.outputFunc(_datas , _nums)
         }

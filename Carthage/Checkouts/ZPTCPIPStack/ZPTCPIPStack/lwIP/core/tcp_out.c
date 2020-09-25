@@ -364,6 +364,23 @@ tcp_write_checks(struct tcp_pcb *pcb, u16_t len)
  * - TCP_WRITE_FLAG_COPY (0x01) data will be copied into memory belonging to the stack
  * - TCP_WRITE_FLAG_MORE (0x02) for TCP connection, PSH flag will not be set on last segment sent,
  * @return ERR_OK if enqueued, another err_t on error
+ 
+ 
+ *写入要发送的数据（但不会立即发送）。
+  *
+  *等待更多的数据发送（如
+  *通过将它们组合在一起可以更有效地发送它们。
+  *要提示系统立即发送数据，请在之后调用tcp_output（）
+  *调用tcp_write（）。
+  *
+  * @param pcb TCP连接的协议控制块，用于为其排队数据。
+  * @param arg指向要入队发送的数据。
+  * @param len数据长度（以字节为单位）
+  * @param apiflags以下标志的组合：
+  *-TCP_WRITE_FLAG_COPY（0x01）数据将被复制到属于堆栈的内存中
+  *-TCP连接的TCP_WRITE_FLAG_MORE（0x02），在发送的最后一个段上不会设置PSH标志，
+  * @排队时返回ERR_OK，出错则返回另一个err_t
+ 
  */
 err_t
 tcp_write(struct tcp_pcb *pcb, const void *arg, u16_t len, u8_t apiflags)
@@ -991,6 +1008,14 @@ tcp_send_empty_ack(struct tcp_pcb *pcb
  * @param pcb Protocol control block for the TCP connection to send data
  * @return ERR_OK if data has been sent or nothing to send
  *         another err_t on error
+ 
+ 
+ *了解我们可以发送和发送的内容
+  *
+  * @param pcb TCP连接的协议控制块，用于发送数据
+  * @返回ERR_OK（如果已发送数据或什么都不发送）
+  *另一个err_t错误
+ 
  */
 err_t
 tcp_output(struct tcp_pcb *pcb
