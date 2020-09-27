@@ -55,8 +55,7 @@ class HTTPConnection: NSObject {
     
     fileprivate let responseHelper: HTTPPayloadHelper = HTTPPayloadHelper()
     
-//    fileprivate let sessionModel: SessionModel = SessionModel()
-    
+  
     fileprivate var didClose: Bool = false
     
     fileprivate var didAddSessionToManager: Bool = false
@@ -74,6 +73,8 @@ class HTTPConnection: NSObject {
         self.outgoingSocket.synchronouslySetDelegate(self,delegateQueue: queue)
         
         self.incomingSocket.readData(withTimeout: 5,tag: readTag.requestHeader)
+        
+//        NSLog("requestHeader--%@", requestHeader.method ?? "")
     }
     
     override var hash: Int {
@@ -198,17 +199,6 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
             self.requestHelper.handleHeader(with: requestHeader)
             
             /* session */
-//            self.sessionModel.date = Date().timeIntervalSince1970
-//            self.sessionModel.method = self.requestHeader.method?.rawValue
-//            self.sessionModel.userAgent = self.requestHeader.userAgent
-//            self.sessionModel.url = self.requestHeader.url
-//            self.sessionModel.host = self.requestHeader.host
-//            self.sessionModel.localIP = self.incomingSocket.localHost
-//            self.sessionModel.localPort = Int(self.incomingSocket.localPort)
-//            self.sessionModel.requestHeaders = self.requestHeader.headerString
-//            /* session status */
-//            self.sessionModel.status = .connect
-            self.addSessionToManager()
             
             /* connect remote */
             do {
