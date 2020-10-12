@@ -246,13 +246,13 @@ open class DNSQuery {
         scanner.skip(to: offset + self.nameBytesLength)
 
         guard let type = DNSType(rawValue: scanner.read16()!) else {
-            NSLog("Received DNS packet with unknown type.")
+            NSLog("wuplyer ----  收到的未知类型的DNS数据包。")
             return nil
         }
         self.type = type
 
         guard let klass = DNSClass(rawValue: scanner.read16()!) else {
-            NSLog("Received DNS packet with unknown class.")
+            NSLog("wuplyer ----  收到未知类的DNS数据包。")
             return nil
         }
         self.klass = klass

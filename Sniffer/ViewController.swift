@@ -93,7 +93,7 @@ class ViewController: UIViewController {
         
         let session  = URLSession.shared
                let url = URL.init(string: "http://api.codertopic.com/itapi/questionsapi/questions.php?typeID=10")
-//                   49    1.028199    10.0.0.93    123.56.237.10    HTTP    286    GET /itapi/questionsapi/questions.php?typeID=10 HTTP/1.1
+//        49    1.028199    10.0.0.93    123.56.237.10    HTTP    286    GET /itapi/questionsapi/questions.php?typeID=10 HTTP/1.1
 //        88    4.064181    10.0.0.93    123.56.237.10    HTTP    341    GET http://api.codertopic.com/itapi/questionsapi/questions.php?typeID=10 HTTP/1.1
         
         let str = getIPAddress(domainName: "api.codertopic.com")
