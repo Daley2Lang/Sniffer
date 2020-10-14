@@ -103,9 +103,11 @@ extension TCPConnection: ZPTCPConnectionDelegate {
     
     func connection(_ connection: ZPTCPConnection, didRead data: Data) {
         
-        let str = String.init(data: data, encoding: .utf8)
-        NSLog("wuplyer TCP---- TCP接受 Tunnel 的数据:\(str ?? "")")
-        
+       
+        if data.count > 0 {
+             let str = String.init(data: data, encoding: .utf8)
+             NSLog("wuplyer TCP---- TCP接受 Tunnel 的数据:\(str ?? "")")
+        }
         //远程soc
         self.remote.write(data, withTimeout: 5, tag: data.count)
         
@@ -144,7 +146,6 @@ extension TCPConnection: GCDAsyncSocketDelegate {
     }
 
     func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
-        
         
         let str = String.init(data: data, encoding: .utf8)
         NSLog("wuplyer TCP---- TCP接受远程的数据:\(str ?? "")")

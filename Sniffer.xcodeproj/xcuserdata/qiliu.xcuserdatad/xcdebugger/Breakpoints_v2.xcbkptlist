@@ -72,38 +72,6 @@
             endingLineNumber = "30"
             landmarkName = "loadAllFromPreferences(completionHandler:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "BB28888F-DD64-45D6-87FC-5CA2C491F35D - 883a333ed7a41766"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Swift.Array&lt;__C.NETunnelProviderManager&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Sniffer.TunnelManager.loadAllFromPreferences(completionHandler: () -&gt; ()) -&gt; ()"
-                  moduleName = "Sniffer"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/qiliu/Desktop/Sniffer/Sniffer/TunnelManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "30"
-                  endingLineNumber = "30"
-                  offsetFromSymbolStart = "1440">
-               </Location>
-               <Location
-                  uuid = "BB28888F-DD64-45D6-87FC-5CA2C491F35D - ecf5057151abce39"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 () -&gt; () in closure #1 (Swift.Optional&lt;Swift.Array&lt;__C.NETunnelProviderManager&gt;&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Sniffer.TunnelManager.loadAllFromPreferences(completionHandler: () -&gt; ()) -&gt; ()"
-                  moduleName = "Sniffer"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/qiliu/Desktop/Sniffer/Sniffer/TunnelManager.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "31"
-                  endingLineNumber = "31"
-                  offsetFromSymbolStart = "152">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -125,22 +93,6 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "C15EB023-E4E2-4489-83B1-ECC94CB7A9CC"
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PacketTunnel/DNSServer.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "lookupRemotely(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             uuid = "1E9272B0-7DCA-4E41-8A53-21B411C0B8FE"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
@@ -152,6 +104,22 @@
             endingLineNumber = "28"
             landmarkName = "PacketTunnelProvider"
             landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "C3B69389-ECBE-4379-954D-A831A5AFF11A"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PacketTunnel/HTTPConnection.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "init(index:incomingSocket:server:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

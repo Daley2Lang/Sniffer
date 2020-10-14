@@ -20,10 +20,7 @@ class HTTPProxyServer: NSObject {
     override init() {
         self.listenSocket = GCDAsyncSocket()
         super.init()
-        self.listenSocket.synchronouslySetDelegate(
-            self,
-            delegateQueue: DispatchQueue(label: "HTTPProxyServer.delegateQueue")
-        )
+        self.listenSocket.synchronouslySetDelegate(self,delegateQueue: DispatchQueue(label: "HTTPProxyServer.delegateQueue"))
     }
     
     func start(with host: String) {
@@ -51,7 +48,6 @@ extension HTTPProxyServer: GCDAsyncSocketDelegate {
         NSLog("wuplyer http----  socket local port:%d", newSocket.localPort)
         NSLog("wuplyer http----  socket connected host:%@", newSocket.connectedHost!)
         NSLog("wuplyer http----  socket connected port:%d", newSocket.connectedPort)
-        
         
         let conn: HTTPConnection = HTTPConnection(index: self.index,incomingSocket: newSocket,server: self)
         self.index += 1
