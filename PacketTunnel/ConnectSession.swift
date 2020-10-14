@@ -119,7 +119,7 @@ public final class ConnectSession {
             return true
         }
         
-        // Look up fake IP reversely should never fail.
+        // 反向查找假 IP 不应失败。
         guard let session = dnsServer.lookupFakeIP(address) else {
             return false
         }
