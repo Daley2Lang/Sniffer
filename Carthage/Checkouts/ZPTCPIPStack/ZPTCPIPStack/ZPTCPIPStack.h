@@ -18,5 +18,6 @@ FOUNDATION_EXPORT const unsigned char ZPTCPIPStackVersionString[];
 
 #import <ZPTCPIPStack/ZPPacketTunnel.h>
 #import <ZPTCPIPStack/ZPTCPConnection.h>
+#import <ZPTCPIPStack/lwIP.h>
 //@class JustTest;
 //#import <ZPTCPIPStack/JustTest.h>

@@ -51,6 +51,8 @@
 		789888FC250A44AE00B66153 /* UInt128.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789888FB250A44AE00B66153 /* UInt128.swift */; };
 		789888FE250A44D700B66153 /* BinaryDataScanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789888FD250A44D600B66153 /* BinaryDataScanner.swift */; };
 		78988900250A453C00B66153 /* Checksum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 789888FF250A453C00B66153 /* Checksum.swift */; };
+		78C1C4352536A56700E787D0 /* TSIPStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C1C4332536A56700E787D0 /* TSIPStack.swift */; };
+		78C1C4362536A56700E787D0 /* TSTCPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78C1C4342536A56700E787D0 /* TSTCPSocket.swift */; };
 		78D5E58E250B23DC00BE6160 /* Tool.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D5E58D250B23DC00BE6160 /* Tool.m */; };
 		78D5E595250B78EA00BE6160 /* DNSResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D5E590250B78EA00BE6160 /* DNSResolver.swift */; };
 		78D5E596250B78EA00BE6160 /* DNSServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D5E591250B78EA00BE6160 /* DNSServer.swift */; };
@@ -204,7 +206,7 @@
 		D3BAE2551F653FFE00A349CA /* lowpan6.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BAE1D91F653FFE00A349CA /* lowpan6.h */; };
 		D3BAE2561F653FFE00A349CA /* lowpan6_opts.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BAE1DA1F653FFE00A349CA /* lowpan6_opts.h */; };
 		D3BAE2571F653FFE00A349CA /* lwipopts.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BAE1DB1F653FFE00A349CA /* lwipopts.h */; };
-		D3BAE2581F653FFE00A349CA /* lwIP.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BAE1DC1F653FFE00A349CA /* lwIP.h */; };
+		D3BAE2581F653FFE00A349CA /* lwIP.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BAE1DC1F653FFE00A349CA /* lwIP.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BAE2591F653FFE00A349CA /* ZPPacketTunnel.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BAE1DD1F653FFE00A349CA /* ZPPacketTunnel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D3BAE25A1F653FFE00A349CA /* ZPPacketTunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = D3BAE1DE1F653FFE00A349CA /* ZPPacketTunnel.m */; };
 		D3BAE25B1F653FFE00A349CA /* ZPPacketTunnelEx.h in Headers */ = {isa = PBXBuildFile; fileRef = D3BAE1DF1F653FFE00A349CA /* ZPPacketTunnelEx.h */; };
@@ -318,6 +320,8 @@
 		789888FB250A44AE00B66153 /* UInt128.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UInt128.swift; sourceTree = "<group>"; };
 		789888FD250A44D600B66153 /* BinaryDataScanner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BinaryDataScanner.swift; sourceTree = "<group>"; };
 		789888FF250A453C00B66153 /* Checksum.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Checksum.swift; sourceTree = "<group>"; };
+		78C1C4332536A56700E787D0 /* TSIPStack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TSIPStack.swift; path = ../../tun2socks/Sources/tun2socks/TSIPStack.swift; sourceTree = "<group>"; };
+		78C1C4342536A56700E787D0 /* TSTCPSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TSTCPSocket.swift; path = ../../tun2socks/Sources/tun2socks/TSTCPSocket.swift; sourceTree = "<group>"; };
 		78D5E58B250B23DC00BE6160 /* Sniffer-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sniffer-Bridging-Header.h"; sourceTree = "<group>"; };
 		78D5E58C250B23DC00BE6160 /* Tool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tool.h; sourceTree = "<group>"; };
 		78D5E58D250B23DC00BE6160 /* Tool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tool.m; sourceTree = "<group>"; };
@@ -709,6 +713,8 @@
 				D3BAE1E31F653FFE00A349CA /* ZPTCPIPStack.h */,
 				789888642507A1AD00B66153 /* ZPTCPBridge.h */,
 				789888652507A1AD00B66153 /* ZPTCPBridge.m */,
+				78C1C4332536A56700E787D0 /* TSIPStack.swift */,
+				78C1C4342536A56700E787D0 /* TSTCPSocket.swift */,
 				789888682507A37200B66153 /* JustSwift.swift */,
 				7898886A2507A38F00B66153 /* JustTest.swift */,
 				D3BAE1531F653FA200A349CA /* Info.plist */,
@@ -931,6 +937,7 @@
 				D3BAE22B1F653FFE00A349CA /* init.h in Headers */,
 				D3BAE2561F653FFE00A349CA /* lowpan6_opts.h in Headers */,
 				D3BAE2211F653FFE00A349CA /* dhcp6.h in Headers */,
+				D3BAE2581F653FFE00A349CA /* lwIP.h in Headers */,
 				D3BAE2331F653FFE00A349CA /* ip_addr.h in Headers */,
 				D3BAE2161F653FFE00A349CA /* snmp_threadsync.h in Headers */,
 				D3BAE2381F653FFE00A349CA /* netif.h in Headers */,
@@ -955,7 +962,6 @@
 				D3BAE2291F653FFE00A349CA /* inet.h in Headers */,
 				D3BAE21A1F653FFE00A349CA /* tftp_opts.h in Headers */,
 				D3BAE2251F653FFE00A349CA /* ethip6.h in Headers */,
-				D3BAE2581F653FFE00A349CA /* lwIP.h in Headers */,
 				D3BAE20D1F653FFE00A349CA /* mqtt_opts.h in Headers */,
 				D3BAE23D1F653FFE00A349CA /* nd6_priv.h in Headers */,
 				D3BAE2511F653FFE00A349CA /* timeouts.h in Headers */,
@@ -1261,6 +1267,7 @@
 			files = (
 				D3BAE1FA1F653FFE00A349CA /* memp.c in Sources */,
 				D3BAE1F21F653FFE00A349CA /* icmp6.c in Sources */,
+				78C1C4352536A56700E787D0 /* TSIPStack.swift in Sources */,
 				D3BAE1EB1F653FFE00A349CA /* icmp.c in Sources */,
 				D3BAE1F51F653FFE00A349CA /* ip6_addr.c in Sources */,
 				D3BAE1F11F653FFE00A349CA /* ethip6.c in Sources */,
@@ -1299,6 +1306,7 @@
 				7876D4B5250244D300B87C46 /* IPDNSMessage.m in Sources */,
 				789888692507A37200B66153 /* JustSwift.swift in Sources */,
 				D3BAE25A1F653FFE00A349CA /* ZPPacketTunnel.m in Sources */,
+				78C1C4362536A56700E787D0 /* TSTCPSocket.swift in Sources */,
 				D3BAE1F31F653FFE00A349CA /* inet6.c in Sources */,
 				D3BAE1F61F653FFE00A349CA /* ip6_frag.c in Sources */,
 				D3BAE1EA1F653FFE00A349CA /* etharp.c in Sources */,
@@ -1539,6 +1547,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
@@ -1566,6 +1575,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CURRENT_PROJECT_VERSION = 1;
