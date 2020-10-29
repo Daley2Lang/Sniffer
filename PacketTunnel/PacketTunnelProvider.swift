@@ -138,6 +138,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         UDProxyServer.TunnelProvider = self
         
         let fakeIPPool = try! IPPool(range: IPRange(startIP: IPAddress(fromString: "198.18.1.1")!, endIP: IPAddress(fromString: "198.18.255.255")!))
+      
         let dnsServer = DNSServer(address: IPAddress(fromString: "198.18.0.1")!, port: Port(port: 53), fakeIPPool: fakeIPPool)
         let resolver = UDPDNSResolver(address: IPAddress(fromString: "114.114.114.114")!, port: Port(port: 53))
         dnsServer.registerResolver(resolver)

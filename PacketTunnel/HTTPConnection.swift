@@ -72,7 +72,7 @@ class HTTPConnection: NSObject {
         
         self.outgoingSocket.synchronouslySetDelegate(self,delegateQueue: queue)
         
-        self.incomingSocket.readData(withTimeout: 5,tag: readTag.requestHeader)
+        self.incomingSocket.readData(withTimeout: 5,tag: 1)
         
 //        NSLog("requestHeader--%@", requestHeader.method ?? "")
     }
