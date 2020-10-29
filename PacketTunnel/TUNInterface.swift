@@ -64,6 +64,12 @@ open class TUNInterface {
             QueueFactory.getQueue().async {
                 for (i, packet) in packets.enumerated() {
                     for stack in self.stacks {
+                        
+                        if IPPacket.peekProtocol(packet) == .icmp {
+                             NSLog("wuplyer icpm---- 收到了icmp 数据包")
+                        }
+                        
+                        
                         if stack.input(packet: packet, version: versions[i]) {
                             break
                         }
