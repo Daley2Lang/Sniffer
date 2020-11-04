@@ -38,6 +38,7 @@
 #define LWIP_HDR_ERRNO_H
 
 #include "lwip/opt.h"
+#import <sys/errno.h>
 
 #ifdef __cplusplus
 extern "C" {
