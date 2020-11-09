@@ -54,6 +54,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         proxySettings.httpsEnabled = true
         proxySettings.excludeSimpleHostnames = true
         proxySettings.exceptionList = ["192.168.0.0/16",
+                                       "192.168.0.2",
                                        "10.0.0.0/8",
                                        "172.16.0.0/12",
                                        "127.0.0.1",
@@ -83,6 +84,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         settings.mtu = NSNumber(value: UINT16_MAX)
         
         let DNSSettings = NEDNSSettings(servers: ["198.18.0.1"])
+//        let DNSSettings = NEDNSSettings(servers: ["114.114.114.114","8.8.8.8"])
         DNSSettings.matchDomains = [""]
         DNSSettings.matchDomainsNoSearch = false
         settings.dnsSettings = DNSSettings
@@ -93,57 +95,29 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         self.setTunnelNetworkSettings(settings) { err in
             completionHandler(err)
             if err == nil {
-                //                NSLog("wuplyer ----  开始读取数据")
-                //                if #available(iOSApplicationExtension 10.0, *) {
-                //                    self.packetFlow.readPacketObjects { packeArray in
-                //                        NSLog("wuplyer ----  数据包数量 %d", packeArray.count)
-                //                        NSLog("wuplyer ----  将数据读出")
-                //
-                //                        var dataArray:[Data] = Array()
-                //                        var protocolArray:[sa_family_t] = Array()
-                //
-                //                        for (_, packe) in packeArray.enumerated() {
-                //                            dataArray.append(packe.data)
-                //                            protocolArray.append(packe.protocolFamily)
-                //                        }
-                //                        self.handle(packets: dataArray, protocols: protocolArray as [NSNumber])
-                //
-                //                        dataArray.removeAll()
-                //                        protocolArray.removeAll()
-                //
-                //                    }
-                //                } else {
-                //
-                //                }
-                //
-                //                //                self.packetFlow.readPackets() { datas, nums in
-                //                //
-                //                //                    NSLog("wuplyer ----  数据包数量 %d", datas.count)
-                //                //                    NSLog("wuplyer ----  将数据读出")
-                //                //                    self.handlePackets(packets: datas, protocols: nums)
-                //                //                }
-                
+
             }
         }
         
         //MARK:三方库配置
         
-        self.interface = TUNInterface(packetFlow: self.packetFlow)
-        
+        self.interface = TUNInterface(packetFlow: self.packetFlow,tunnel: self)
+        TUNInterface.TunnelProvider = self;
+
         self.tcpProxy = TCPProxyServer()
         self.tcpProxy!.server.ipv4Setting( withAddress: settings.ipv4Settings!.addresses[0], netmask: settings.ipv4Settings!.subnetMasks[0])
 //        _ = settings.mtu!.uint16Value
-        
+
         self.udpProxy = UDProxyServer(packetFlow: self.packetFlow)
         UDProxyServer.TunnelProvider = self
-        
+
         let fakeIPPool = try! IPPool(range: IPRange(startIP: IPAddress(fromString: "198.18.1.1")!, endIP: IPAddress(fromString: "198.18.255.255")!))
-      
+
         let dnsServer = DNSServer(address: IPAddress(fromString: "198.18.0.1")!, port: Port(port: 53), fakeIPPool: fakeIPPool)
         let resolver = UDPDNSResolver(address: IPAddress(fromString: "114.114.114.114")!, port: Port(port: 53))
         dnsServer.registerResolver(resolver)
         DNSServer.currentServer = dnsServer
-        
+
         self.interface.register(stack: dnsServer)
         self.interface.register(stack: self.udpProxy)
         self.interface.register(stack: self.tcpProxy)

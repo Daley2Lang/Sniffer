@@ -7,14 +7,18 @@ import NetworkExtension
 
 open class TUNInterface {
     fileprivate weak var packetFlow: NEPacketTunnelFlow?
+    
+    public static weak var TunnelProvider: NETunnelProvider?
+    
     fileprivate var stacks: [IPStackProtocol] = []
     
     /**
   用数据包流初始化TUN接口。
      -参数packetFlow：要使用的数据包流。
      */
-    public init(packetFlow: NEPacketTunnelFlow) {
+    public init(packetFlow: NEPacketTunnelFlow ,tunnel: NETunnelProvider) {
         self.packetFlow = packetFlow
+//        self.TunnelProvider = tunnel;
     }
     
     /**
