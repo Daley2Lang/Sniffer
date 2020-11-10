@@ -50,8 +50,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         proxySettings.httpServer = NEProxyServer(address: host, port: Int(port))
         proxySettings.httpsServer = NEProxyServer(address: host, port: Int(port))
         proxySettings.autoProxyConfigurationEnabled = false
-        proxySettings.httpEnabled = true
-        proxySettings.httpsEnabled = true
+//        proxySettings.httpEnabled = true
+//        proxySettings.httpsEnabled = true
         proxySettings.excludeSimpleHostnames = true
         proxySettings.exceptionList = ["192.168.0.0/16",
                                        "192.168.0.2",

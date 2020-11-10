@@ -62,7 +62,9 @@ class TCPProxyServer: NSObject ,IPStackProtocol{
 
 extension TCPProxyServer: ZPPacketTunnelDelegate {
     func tunnel(_ tunnel: ZPPacketTunnel, didEstablishNewTCPConnection conn: ZPTCPConnection) {
+        
         NSLog("wuplyer TCP----  通道开启接收到新的tcp 链接")
+        
         if let tcpConn: TCPConnection = TCPConnection( index: self.index,localSocket: conn,server: self)
         {
             self.index += 1

@@ -6,18 +6,42 @@ open class DNSMessage {
     //    var sourcePort: Port?
     //    var destinationAddress: IPv4Address?
     //    var destinationPort: Port?
-    //交易标号
+  
+//MARK:基础结构部分
+    
+    //MARK:交易标号
+    
     open var transactionID: UInt16 = 0
+
+   //MARK: Flags标志字段 一共16 （flag 各个位置的标志，8个）
+     //QR：查询请求/响应的标志信息。查询请求时，值为 0；响应时，值为 1。
     open var messageType: DNSMessageType = .query
+    
+     //open var messageType  操作码。其中，0 表示标准查询；1 表示反向查询；2 表示服务器状态请求。
+    
+     //授权应答，该字段在响应报文中有效。值为 1 时，表示名称服务器是权威服务器；值为 0 时，表示不是权威服务器
     open var authoritative: Bool = false
+     //表示是否被截断。值为 1 时，表示响应已超过 512 字节并已被截断，只返回前 512 个字节
     open var truncation: Bool = false
+     //期望递归
     open var recursionDesired: Bool = false
+     //可用递归。该字段只出现在响应报文中。当值为 1 时，表示服务器支持递归查询。
     open var recursionAvailable: Bool = false
+    
+     
+    //open var Z: Bool = false // Z：保留字段，在所有的请求和应答报文中，它的值必须为 0。
+    
+    // rcode（Reply code）：返回码字段
     open var status: DNSReturnStatus = .success
-    open var queries: [DNSQuery] = []
-    open var answers: [DNSResource] = []
-    open var nameservers: [DNSResource] = []
-    open var addtionals: [DNSResource] = []
+    
+    
+    open var queries: [DNSQuery] = []  //问题计数：DNS 查询请求的数目
+    open var answers: [DNSResource] = [] //回答资源记录数：DNS 响应的数目。
+    open var nameservers: [DNSResource] = [] //权威名称服务器计数：权威名称服务器的数目
+    open var addtionals: [DNSResource] = []  //附加资源记录数：额外的记录数目（权威名称服务器对应 IP 地址的数目）
+    
+    
+    
     
     var payload: Data!
     
@@ -86,13 +110,10 @@ open class DNSMessage {
         let addtionalCount = scanner.read16()!
         
         for _ in 0..<queryCount {
-            do {
-                try queries.append(DNSQuery(payload: payload, offset: scanner.position, base: 0)!)
-                scanner.advance(by: queries.last!.bytesLength)
-            } catch {
-                assertionFailure("\(error)")
-            }
-            
+          
+             queries.append(DNSQuery(payload: payload, offset: scanner.position, base: 0)!)
+            scanner.advance(by: queries.last!.bytesLength)
+          
         }
         
         for _ in 0..<answerCount {
