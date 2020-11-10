@@ -171,38 +171,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let numbers = [1, 2, 3, 4]
-        let numberSum = numbers.reduce(0, { x, y in
-            x + y
-        })
-        
-        NSLog("累加的值 \(numberSum)")
-        
-        
-        ponteeTest()
-        
-        //        NotificationCenter.default.addObserver(
-        //            self,
-        //            selector: #selector(self.vpnStatusDidChange),
-        //            name: .NEVPNStatusDidChange,
-        //            object: nil
-        //        )
-        //        NotificationCenter.default.addObserver(
-        //            self,
-        //            selector: #selector(self.vpnConfigurationChange),
-        //            name: .NEVPNConfigurationChange,
-        //            object: nil
-        //        )
-        //
-        //        self.viewActive(enable: false)
-        //        TunnelManager.shared.loadAllFromPreferences() {
-        //            self.viewActive(enable: true)
-        //            NotificationCenter.default.post(
-        //                name: .NEVPNStatusDidChange,
-        //                object: nil
-        //            )
-        //        }
+
     }
     
     required init?(coder: NSCoder) {
@@ -281,34 +250,7 @@ class ViewController: UIViewController {
     }
     
     
-    func ponteeTest()  -> Void {
-        struct Rich {
-            var money: Int
-            var isRich: Bool
-        }
-        var rich = Rich(money: 99999999, isRich: true)
-//        通过withUnsafeBytes获取可变原生缓冲类型指针，可获取到rich中每个字节的值
-        withUnsafeBytes(of: &rich) { bytes in
-            
-            print("输出bytes: \(bytes)")
-            
-            for byte in bytes {
-                print("使劲输出 \(byte)")
-            }
-        }
-        print("---------------")
 
-//        withUnsafeMutablePointer 获取可变指针
-//        withUnsafeMutableBufferPointer 获取可变缓冲类型指针
-        let richP = withUnsafeMutablePointer(to: &rich) { UnsafeMutableRawPointer($0) }
-        let moneyP = richP.assumingMemoryBound(to: Int.self)
-        moneyP.pointee = 0
-        print("输出money:\(rich.money)")
-        let isRichP = richP.advanced(by: MemoryLayout<Int>.stride).assumingMemoryBound(to: Bool.self)
-        isRichP.pointee = false
-        print(rich.isRich)
-         print("输出isRich:\(rich.isRich)")
-    }
     
 }
 

@@ -16,5 +16,5 @@ FOUNDATION_EXPORT const unsigned char ZPTCPIPStackVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <ZPTCPIPStack/PublicHeader.h>
 
-#import <ZPTCPIPStack/ZPPacketTunnel.h>
-#import <ZPTCPIPStack/ZPTCPConnection.h>
+//#import <ZPTCPIPStack/ZPPacketTunnel.h>
+//#import <ZPTCPIPStack/ZPTCPConnection.h>

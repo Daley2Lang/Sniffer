@@ -27,19 +27,12 @@ func == (left: ConnectInfo, right: ConnectInfo) -> Bool {
 
 
 public class UDProxyServer:IPStackProtocol {
-     fileprivate weak var packetFlow: NEPacketTunnelFlow?
-    ///当前活动的NETunnelProvider，它创建NWTCPConnection实例。
-    ///-注意：如果使用`NWTCPSocket`或`NWUDPSocket`，则必须在创建任何连接之前进行设置。
-    public static weak var TunnelProvider: NETunnelProvider?
-    
+ 
     fileprivate var activeSockets:[ConnectInfo:NWUDPSocket] = [:]
     
     fileprivate let queueServer : DispatchQueue = DispatchQueue(label: "NEKit.UDPDirectStack.SocketArrayQueue", attributes: [])
     
-    public init(packetFlow: NEPacketTunnelFlow) {
-        self.packetFlow = packetFlow
-        self.outputFunc = generateOutputBlock()
-    }
+   public init() {}
     
     public func start() {
         
@@ -91,9 +84,9 @@ public class UDProxyServer:IPStackProtocol {
         let sourcePort = IPPacket.peekSourcePort(packetData)
         
         
-        NSLog("wuplyer ----  捕获到UDP 源IP:\(sourceIP)")
+        NSLog("wuplyer ----  捕获到UDP 源IP:\(String(describing: sourceIP))")
         NSLog("wuplyer ----  捕获到UDP 源端口:\(sourcePort ?? 9527)")
-        NSLog("wuplyer ----  捕获到UDP 目标IP:\( desiIP)")
+        NSLog("wuplyer ----  捕获到UDP 目标IP:\( String(describing: desiIP))")
         NSLog("wuplyer ----  捕获到UDP 目标端口:\(desPort ?? 9527)")
                    
                    
@@ -167,12 +160,12 @@ public class UDProxyServer:IPStackProtocol {
     }
     
     
-    
-    fileprivate func generateOutputBlock() -> ([Data], [NSNumber]) -> Void {
-          return { [weak self] packets, versions in
-              self?.packetFlow?.writePackets(packets, withProtocols: versions)
-          }
-      }
+//
+//    fileprivate func generateOutputBlock() -> ([Data], [NSNumber]) -> Void {
+//          return { [weak self] packets, versions in
+//              self?.packetFlow?.writePackets(packets, withProtocols: versions)
+//          }
+//      }
     
 }
 

@@ -10,48 +10,53 @@ import NetworkExtension
 
 var Tunnel: PacketTunnelProvider?
 
+let DefaultIP = "127.0.0.1"
+
+let DefaultPort = "9527"
+
 class PacketTunnelProvider: NEPacketTunnelProvider {
     
-//    http://hmrz.wo.cn/sdk-deliver/android/union-sdk-android-hmrz-v1.1.1.zip
+    //    http://hmrz.wo.cn/sdk-deliver/android/union-sdk-android-hmrz-v1.1.1.zip
+    
+    var enablePacketProcessing = false
+    
+    var started:Bool = false
     
     var interface: TUNInterface!
     
-    var httpProxy: HTTPProxyServer?
+    var httpProxy: WUProxyServer?
     
     var connection:NWTCPConnection!
     
-    var tcpProxy: TCPProxyServer!
+    var tcpProxy: TCPHandler!
     
     var udpProxy: UDProxyServer!
     
-    var started:Bool = false
+    
+    var lastPath:NWPath?
     
     override func startTunnel(options: [String : NSObject]? = nil, completionHandler: @escaping (Error?) -> Void) {
         
         NSLog("wuplyer ----  通道开启")
         
-        Tunnel = self
-        _ = self.routingMethod
-        
-        /* http */
-        self.httpProxy = HTTPProxyServer()
-        self.httpProxy!.start(with: "127.0.0.1")
-        
-        NSLog("wuplyer ----  当前localhost %@",self.httpProxy!.listenSocket.localHost!)
-        NSLog("wuplyer ----  当前localport %d",self.httpProxy!.listenSocket.localPort)
-        let host = self.httpProxy!.listenSocket.localHost!
-        let port = self.httpProxy!.listenSocket.localPort
-        
+        if !self.started{
+            self.httpProxy = GCDHTTPProxyServer(address: IPAddress(fromString: DefaultIP), port: Port(port: UInt16(DefaultPort)!))
+            try! self.httpProxy!.start()
+            self.addObserver(self, forKeyPath: "defaultPath", options: .initial, context: nil)
+        }else{
+            self.httpProxy!.stop()
+            try! self.httpProxy!.start()
+        }
         
         //MARK: 基础配置
         let settings: NEPacketTunnelNetworkSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "127.0.0.1")
         /* proxy settings */
         let proxySettings: NEProxySettings = NEProxySettings()
-        proxySettings.httpServer = NEProxyServer(address: host, port: Int(port))
-        proxySettings.httpsServer = NEProxyServer(address: host, port: Int(port))
+        proxySettings.httpServer = NEProxyServer(address: DefaultIP, port: Int(DefaultPort) ?? 9527)
+        proxySettings.httpsServer = NEProxyServer(address: DefaultIP, port: Int(DefaultPort) ?? 9527)
         proxySettings.autoProxyConfigurationEnabled = false
-//        proxySettings.httpEnabled = true
-//        proxySettings.httpsEnabled = true
+        proxySettings.httpEnabled = true
+        proxySettings.httpsEnabled = true
         proxySettings.excludeSimpleHostnames = true
         proxySettings.exceptionList = ["192.168.0.0/16",
                                        "192.168.0.2",
@@ -84,7 +89,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         settings.mtu = NSNumber(value: UINT16_MAX)
         
         let DNSSettings = NEDNSSettings(servers: ["198.18.0.1"])
-//        let DNSSettings = NEDNSSettings(servers: ["114.114.114.114","8.8.8.8"])
+        //        let DNSSettings = NEDNSSettings(servers: ["114.114.114.114","8.8.8.8"])
         DNSSettings.matchDomains = [""]
         DNSSettings.matchDomainsNoSearch = false
         settings.dnsSettings = DNSSettings
@@ -94,41 +99,82 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         /* start */
         self.setTunnelNetworkSettings(settings) { err in
             completionHandler(err)
-            if err == nil {
-
+            
+            guard err == nil else {
+                NSLog("开启失败")
+                completionHandler(err)
+                return
             }
+        
+            completionHandler(nil)
+            
         }
         
         //MARK:三方库配置
         
         self.interface = TUNInterface(packetFlow: self.packetFlow,tunnel: self)
         TUNInterface.TunnelProvider = self;
-
-        self.tcpProxy = TCPProxyServer()
-        self.tcpProxy!.server.ipv4Setting( withAddress: settings.ipv4Settings!.addresses[0], netmask: settings.ipv4Settings!.subnetMasks[0])
-//        _ = settings.mtu!.uint16Value
-
-        self.udpProxy = UDProxyServer(packetFlow: self.packetFlow)
-        UDProxyServer.TunnelProvider = self
-
+        
+        let tcpS = TCPHandler.stack
+        tcpS.proxyServer = self.httpProxy
+        
+        self.interface.register(stack: self.tcpProxy)
+        
+        self.udpProxy = UDProxyServer()
+        self.interface.register(stack: self.udpProxy)
+        
         let fakeIPPool = try! IPPool(range: IPRange(startIP: IPAddress(fromString: "198.18.1.1")!, endIP: IPAddress(fromString: "198.18.255.255")!))
-
+        
         let dnsServer = DNSServer(address: IPAddress(fromString: "198.18.0.1")!, port: Port(port: 53), fakeIPPool: fakeIPPool)
         let resolver = UDPDNSResolver(address: IPAddress(fromString: "114.114.114.114")!, port: Port(port: 53))
         dnsServer.registerResolver(resolver)
         DNSServer.currentServer = dnsServer
-
+        
         self.interface.register(stack: dnsServer)
-        self.interface.register(stack: self.udpProxy)
-        self.interface.register(stack: self.tcpProxy)
+        
         self.interface.start()
+        
         
         
     }
     
     override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
-        NSLog("wuplyer ----  通道关闭")
+        if enablePacketProcessing {
+            interface.stop()
+            interface = nil
+            DNSServer.currentServer = nil
+        }
+        
+        if(httpProxy != nil){
+            httpProxy?.stop()
+            httpProxy = nil
+            RawSocketFactory.TunnelProvider = nil
+        }
         completionHandler()
+        
+        exit(EXIT_SUCCESS)
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "defaultPath" {
+            if self.defaultPath?.status == .satisfied && self.defaultPath != lastPath{
+                if(lastPath == nil){
+                    lastPath = self.defaultPath
+                    
+                    NSLog("wu_log:")
+                    
+                }else{
+                    NSLog("wu_log:received network change notifcation")
+                    let delayTime = DispatchTime.now() + Double(Int64(1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+                    DispatchQueue.main.asyncAfter(deadline: delayTime) {
+                        self.startTunnel(options: nil){_ in}
+                    }
+                }
+            }else{
+                lastPath = defaultPath
+            }
+        }
+        
     }
     
     override func handleAppMessage(_ messageData: Data, completionHandler: ((Data?) -> Void)? = nil) {
@@ -143,95 +189,6 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
             }
         default:
             completionHandler?(nil)
-        }
-    }
-    
-    
-    
-    
-    
-    func handle(packets: [Data], protocols: [NSNumber]) {
-        
-        NSLog("wuplyer ----  数据包的数量:\(packets.count)")
-        
-        for (index, data) in packets.enumerated() {
-            
-            switch protocols[index].int32Value {
-            case AF_INET: /* internetwork: UDP, TCP, etc. */
-                
-                if IPPacket.peekProtocol(data) == .udp {
-                    self.udpProxy?.input(packet: data, version: protocols[index])
-                }
-                
-                if IPPacket.peekProtocol(data) == .tcp {
-                    NSLog("wuplyer ----  捕获到TCP 数据")
-                    NSLog("wuplyer ----  tcp数据处理")
-                    self.tcpProxy?.server.ipPacketInput(data)
-                }
-                
-                
-            case AF_INET6: //暂不支持IPV6
-                break
-            default:
-                fatalError()
-            }
-        }
-        
-        
-        if #available(iOSApplicationExtension 10.0, *) {
-            self.packetFlow.readPacketObjects { packeArray in
-                
-                var dataArray:[Data] = Array()
-                var protocolArray:[sa_family_t] = Array()
-                for (_, packe) in packeArray.enumerated() {
-                    NSLog("wuplyer ----  数据包的来源")
-                    _ = packe.metadata
-                    NSLog("wuplyer ----  数据包的来源:\(String(describing: packe.metadata?.sourceAppSigningIdentifier))")
-                    dataArray.append(packe.data)
-                    protocolArray.append(packe.protocolFamily)
-                }
-                self.handle(packets: dataArray, protocols: protocolArray as [NSNumber])
-                dataArray.removeAll()
-                protocolArray.removeAll()
-            }
-        } else {
-            
-        }
-    }
-    
-    
-    func handlePackets(packets: [Data], protocols: [NSNumber]) {
-        
-        NSLog("wuplyer ----  数据包的数量:\(packets.count)")
-        
-        for (index, data) in packets.enumerated() {
-            
-            switch protocols[index].int32Value {
-            case AF_INET: /* internetwork: UDP, TCP, etc. */
-                
-                if IPPacket.peekProtocol(data) == .udp {
-                    self.udpProxy?.input(packet: data, version: protocols[index])
-                }
-                
-                if IPPacket.peekProtocol(data) == .tcp {
-                    NSLog("wuplyer ----  捕获到TCP 数据")
-                    NSLog("wuplyer ----  tcp数据处理")
-                    self.tcpProxy?.server.ipPacketInput(data)
-                }
-                
-                
-            case AF_INET6: //暂不支持IPV6
-                break
-            default:
-                fatalError()
-            }
-        }
-        
-        
-        
-        
-        self.packetFlow.readPackets { datas, numbers in
-            self.handlePackets(packets: datas, protocols: numbers)
         }
     }
     
