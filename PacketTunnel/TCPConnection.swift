@@ -58,36 +58,25 @@ class TCPConnection: NSObject {
             self.close(with: "Local TCP has aborted before connecting remote.")
             return nil
         }
-        self.remote.synchronouslySetDelegate( self, delegateQueue: queue)
+//        self.remote.synchronouslySetDelegate( self, delegateQueue: queue)
         
-        /* session */
-        self.sessionModel.date = Date().timeIntervalSince1970
-        self.sessionModel.method = "TCP"
-        self.sessionModel.localIP = self.local.srcAddr
-        self.sessionModel.localPort = Int(self.local.srcPort)
-        self.sessionModel.remoteIP = self.local.destAddr
-        self.sessionModel.remotePort = Int(self.local.destPort)
-        self.sessionModel.url = "\(self.local.destAddr):\(self.local.destPort)"
-        /* session status */
-        self.sessionModel.status = .connect
-        self.addSessionToManager()
         
-//        let endpoint = NWHostEndpoint(hostname: self.local.destAddr, port: "\(self.local.destPort)")
-//
-//        let tlsParameters = NWTLSParameters()
-//
-//        guard let connection = TUNInterface.TunnelProvider?.createTCPConnection(to: endpoint, enableTLS: false, tlsParameters: tlsParameters, delegate: nil) else {
-//            return
-//        }
-//        self.newRemote = connection
-//        connection.addObserver(self, forKeyPath: "state", options: [.initial, .new], context: nil)
-//
-        do {
-            // NSLog("wuplyer TCP---- 远程开始连接，目标ip：\(self.local.destAddr),目标端口:\(self.local.destPort)")
-            try self.remote.connect(toHost: self.local.destAddr,onPort: self.local.destPort)
-        } catch {
-            self.close(with: "\(error)")
+        let endpoint = NWHostEndpoint(hostname: self.local.destAddr, port: "\(self.local.destPort)")
+
+        let tlsParameters = NWTLSParameters()
+
+        guard let connection = TUNInterface.TunnelProvider?.createTCPConnection(to: endpoint, enableTLS: false, tlsParameters: tlsParameters, delegate: nil) else {
+            return
         }
+        self.newRemote = connection
+        connection.addObserver(self, forKeyPath: "state", options: [.initial, .new], context: nil)
+//
+//        do {
+//            // NSLog("wuplyer TCP---- 远程开始连接，目标ip：\(self.local.destAddr),目标端口:\(self.local.destPort)")
+//            try self.remote.connect(toHost: self.local.destAddr,onPort: self.local.destPort)
+//        } catch {
+//            self.close(with: "\(error)")
+//        }
     }
 
     
@@ -108,17 +97,6 @@ class TCPConnection: NSObject {
 
         self.server?.remove(connection: self)
     }
-    
-    func addSessionToManager() {
-        guard !self.didAddSessionToManager else {
-            return
-        }
-        self.didAddSessionToManager = true
-        if !self.didClose {
-            SessionManager.shared.activeAppend(self.sessionModel)
-        }
-    }
-    
     
 
     override var hash: Int {
@@ -145,6 +123,8 @@ extension TCPConnection{
         QueueFactory.getQueue().async(execute: block)
     }
     
+    
+    // local 读取之后 即将写入远程
     public func write(data: Data) {
         guard !cancelled else {
             return
@@ -152,9 +132,8 @@ extension TCPConnection{
 
         guard data.count > 0 else {
             QueueFactory.getQueue().async {
-                
-                self.local.readData()
-                
+    
+                self.local.readData() //没有数据local 继续读
 //                self.delegate?.didWrite(data: data, by: self)
             }
             return
@@ -316,12 +295,10 @@ extension TCPConnection{
                     return
                 }
                 
-                //                self.delegate?.didWrite(data: data, by: self)
-                
+                //self.delegate?.didWrite(data: data, by: self)
                 
                 NSLog("数据已经写入远程")
-                
-                self.local.readData()
+                self.local.readData() // 远程写完 本地继续读
                 self.checkStatus()
             }
         }
@@ -330,7 +307,6 @@ extension TCPConnection{
     public func disconnect() {
         
         cancelled = true
-        
         if newRemote == nil  || newRemote!.state == .cancelled {
             
         } else {
@@ -362,9 +338,10 @@ extension TCPConnection: ZPTCPConnectionDelegate {
             NSLog("wuplyer TCP---- TCP接受 Tunnel 的数据:\(str ?? "")")
         }
         //远程soc
-        self.remote.write(data, withTimeout: 5, tag: 0)
+//        self.remote.write(data, withTimeout: 5, tag: 0)
         
-//        self.write(data: data)
+        self.write(data: data)
+        self.readData()
         
     }
     
@@ -373,9 +350,10 @@ extension TCPConnection: ZPTCPConnectionDelegate {
         if isEmpty {
 //            self.remote.readData(withTimeout: -1, buffer: nil, bufferOffset: 0, maxLength: UInt(UINT16_MAX / 2), tag: 0)
 //            self.readData()
+             self.readData()
         }
         
-        self.remote .readData(withTimeout: -1, tag: 0)
+//        self.remote.readData(withTimeout: -1, tag: 0)
         
     }
     
@@ -391,32 +369,32 @@ extension TCPConnection: ZPTCPConnectionDelegate {
     
 }
 
-extension TCPConnection: GCDAsyncSocketDelegate {
-    
-    func socket(_ sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
-        /* session status */
-        self.sessionModel.status = .active
-        self.local.readData()
-//        self.remote.readData(withTimeout: -1, buffer: nil, bufferOffset: 0, maxLength: UInt(UINT16_MAX / 2), tag: 0)
-         self.remote.readData(withTimeout: -1, tag: 0)
-    }
-    
-    func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
-        
-        let str = String.init(data: data, encoding: .utf8)
-        NSLog("wuplyer TCP---- TCP接受远程的数据:\(str ?? "")")
-        
-        self.local.write(data)
-        self.remote.readData(withTimeout: -1, tag: tag)
-    }
-    
-    func socket(_ sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
-        self.local.readData()
-        self.remote.readData( withTimeout: 5, tag:tag)
-    }
-    
-    func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: Error?) {
-        self.close(with: "Remote: \(String(describing: err))")
-    }
-    
-}
+//extension TCPConnection: GCDAsyncSocketDelegate {
+//
+//    func socket(_ sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
+//        /* session status */
+//        self.sessionModel.status = .active
+//        self.local.readData()
+////        self.remote.readData(withTimeout: -1, buffer: nil, bufferOffset: 0, maxLength: UInt(UINT16_MAX / 2), tag: 0)
+//         self.remote.readData(withTimeout: -1, tag: 0)
+//    }
+//
+//    func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
+//
+//        let str = String.init(data: data, encoding: .utf8)
+//        NSLog("wuplyer TCP---- TCP接受远程的数据:\(str ?? "")")
+//
+//        self.local.write(data)
+//        self.remote.readData(withTimeout: -1, tag: tag)
+//    }
+//
+//    func socket(_ sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
+//        self.local.readData()
+//        self.remote.readData( withTimeout: 5, tag:tag)
+//    }
+//
+//    func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: Error?) {
+//        self.close(with: "Remote: \(String(describing: err))")
+//    }
+//
+//}
