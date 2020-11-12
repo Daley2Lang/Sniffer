@@ -107,8 +107,7 @@ extension TCPConnection: ZPTCPConnectionDelegate {
              NSLog("wuplyer TCP---- TCP接受 Tunnel 的数据:\(str ?? "")")
         }
         //远程soc
-        self.remote.write(data, withTimeout: 5, tag: data.count)
-        self.remote.readData(withTimeout: -1, tag: data.count)
+        self.remote.write(data, withTimeout: 5, tag: self.index)
         
     }
     
@@ -117,7 +116,8 @@ extension TCPConnection: ZPTCPConnectionDelegate {
         NSLog("wuplyer TCP---- 将数据写入应用之后")
         
         if isEmpty {
-            self.remote.readData(withTimeout: -1, buffer: nil, bufferOffset: 0, maxLength: UInt(UINT16_MAX / 2), tag: 0)
+            self.remote.readData(withTimeout: -1, tag: self.index)
+//            self.remote.readData(withTimeout: -1, buffer: nil, bufferOffset: 0, maxLength: UInt(UINT16_MAX / 2), tag: 0)
         }
     }
     
@@ -125,12 +125,12 @@ extension TCPConnection: ZPTCPConnectionDelegate {
         
          NSLog("wuplyer TCP---- tun2sock 检查数据错误 链接错误:\(err)")
         
-        self.close(with: "Local write: \(err)")
+//        self.close(with: "Local write: \(err)")
     }
     
     func connection(_ connection: ZPTCPConnection, didDisconnectWithError err: Error) {
          NSLog("wuplyer TCP---- tun2sock 断开连接 链接错误:\(err)")
-        self.close(with: "Local: \(err)")
+//        self.close(with: "Local: \(err)")
     }
     
 }
@@ -139,9 +139,9 @@ extension TCPConnection: GCDAsyncSocketDelegate {
     
     func socket(_ sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
         /* session status */
-        self.sessionModel.status = .active
         self.local.readData()
-        self.remote.readData(withTimeout: -1, buffer: nil, bufferOffset: 0, maxLength: UInt(UINT16_MAX / 2), tag: 0)
+        self.remote.readData(withTimeout: -1, tag: self.index)
+//        self.remote.readData(withTimeout: -1, buffer: nil, bufferOffset: 0, maxLength: UInt(UINT16_MAX / 2), tag: 0)
     }
 
     func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
@@ -150,6 +150,7 @@ extension TCPConnection: GCDAsyncSocketDelegate {
         NSLog("wuplyer TCP---- TCP接受远程的数据:\(str ?? "")")
         
         self.local.write(data)
+        
         self.remote.readData(withTimeout: -1, tag: tag)
     }
     

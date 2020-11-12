@@ -155,13 +155,7 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
         
     }
     
-    func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: Error?) {
-        if sock == self.incomingSocket {
-            self.close(note: "Local: \(String(describing: err))")
-        } else {
-            self.close(note: "Remote: \(String(describing: err))")
-        }
-    }
+
     
     func socket(_ sock: GCDAsyncSocket, didRead data: Data, withTag tag: Int) {
         
@@ -175,8 +169,6 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
             }
             
         }
-        
-     
         
         NSLog("wuplyer http---- socket tag :\(tag)")
         
@@ -212,10 +204,7 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
         case readTag.requestPayload:
             
             assert(sock == self.incomingSocket, "error in sock")
-            
-            /* session */
-//            self.sessionModel.uploadTraffic += data.count
-            
+
             self.requestHelper.handlePayload(with: data)
             self.outgoingSocket.write(
                 data,
@@ -232,11 +221,7 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
                 return
             }
             self.responseHeader = responseHeader
-            
-            /* session */
-//            self.sessionModel.responseHeaders = self.responseHeader.headerString
-//            self.sessionModel.downloadTraffic += data.count
-            
+             
             self.responseHelper.handleHeader(with: responseHeader)
             
             self.incomingSocket.write(data, withTimeout: 5,tag: writeTag.responseHeader)
@@ -244,10 +229,7 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
         case readTag.responsePayload:
             
             assert(sock == self.outgoingSocket, "error in sock")
-            
-            /* session */
-//            self.sessionModel.downloadTraffic += data.count
-            
+
             self.responseHelper.handlePayload(with: data)
             self.incomingSocket.write(
                 data,
@@ -258,10 +240,7 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
         case readTag.connectIn:
             
             assert(sock == self.incomingSocket, "error in sock")
-            
-            /* session */
-//            self.sessionModel.uploadTraffic += data.count
-            
+
             self.outgoingSocket.write(
                 data,
                 withTimeout: -1,
@@ -271,10 +250,7 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
         case readTag.connectOut:
             
             assert(sock == self.outgoingSocket, "error in sock")
-            
-            /* session */
-//            self.sessionModel.downloadTraffic += data.count
-            
+
             self.incomingSocket.write(
                 data, 
                 withTimeout: -1,
@@ -286,6 +262,14 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
         }
     }
     
+    func socketDidDisconnect(_ sock: GCDAsyncSocket, withError err: Error?) {
+        if sock == self.incomingSocket {
+            self.close(note: "Local: \(String(describing: err))")
+        } else {
+            self.close(note: "Remote: \(String(describing: err))")
+        }
+    }
+    
     func socket(_ sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
         switch tag {
         case writeTag.connectHeader, writeTag.connectIn, writeTag.connectOut:
@@ -293,10 +277,7 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
                 if tag == writeTag.connectHeader {
                     
                     assert(sock == self.incomingSocket, "error in sock")
-                    
-                    /* session status */
-//                    self.sessionModel.status = .active
-                    
+                                 
                 } else {
                     assert(sock == self.outgoingSocket, "error in sock")
                 }
@@ -315,9 +296,6 @@ extension HTTPConnection: GCDAsyncSocketDelegate {
         case writeTag.requestHeader, writeTag.requestPayload:
             assert(sock == self.outgoingSocket, "error in sock")
             if self.requestHelper.isEnd {
-                
-                /* session status */
-//                self.sessionModel.status = .receiveResponse
                 
                 self.outgoingSocket.readData(
                     withTimeout: 5,

@@ -42,7 +42,6 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         let host = self.httpProxy!.listenSocket.localHost!
         let port = self.httpProxy!.listenSocket.localPort
         
-        
         //MARK: 基础配置
         let settings: NEPacketTunnelNetworkSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: "127.0.0.1")
         /* proxy settings */
@@ -50,8 +49,8 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         proxySettings.httpServer = NEProxyServer(address: host, port: Int(port))
         proxySettings.httpsServer = NEProxyServer(address: host, port: Int(port))
         proxySettings.autoProxyConfigurationEnabled = false
-        proxySettings.httpEnabled = true
-        proxySettings.httpsEnabled = true
+//        proxySettings.httpEnabled = true
+//        proxySettings.httpsEnabled = true
         proxySettings.excludeSimpleHostnames = true
         proxySettings.exceptionList = ["192.168.0.0/16",
                                        "10.0.0.0/8",
@@ -94,36 +93,6 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         self.setTunnelNetworkSettings(settings) { err in
             completionHandler(err)
             if err == nil {
-                //                NSLog("wuplyer ----  开始读取数据")
-                //                if #available(iOSApplicationExtension 10.0, *) {
-                //                    self.packetFlow.readPacketObjects { packeArray in
-                //                        NSLog("wuplyer ----  数据包数量 %d", packeArray.count)
-                //                        NSLog("wuplyer ----  将数据读出")
-                //
-                //                        var dataArray:[Data] = Array()
-                //                        var protocolArray:[sa_family_t] = Array()
-                //
-                //                        for (_, packe) in packeArray.enumerated() {
-                //                            dataArray.append(packe.data)
-                //                            protocolArray.append(packe.protocolFamily)
-                //                        }
-                //                        self.handle(packets: dataArray, protocols: protocolArray as [NSNumber])
-                //
-                //                        dataArray.removeAll()
-                //                        protocolArray.removeAll()
-                //
-                //                    }
-                //                } else {
-                //
-                //                }
-                //
-                //                //                self.packetFlow.readPackets() { datas, nums in
-                //                //
-                //                //                    NSLog("wuplyer ----  数据包数量 %d", datas.count)
-                //                //                    NSLog("wuplyer ----  将数据读出")
-                //                //                    self.handlePackets(packets: datas, protocols: nums)
-                //                //                }
-                
             }
         }
         
