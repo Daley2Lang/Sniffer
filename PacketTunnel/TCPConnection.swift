@@ -100,12 +100,12 @@ extension TCPConnection: ZPTCPConnectionDelegate {
         
          NSLog("wuplyer TCP---- tun2sock 检查数据错误 链接错误:\(err)")
         
-//        self.close(with: "Local write: \(err)")
+        self.close(with: "Local write: \(err)")
     }
     
     func connection(_ connection: ZPTCPConnection, didDisconnectWithError err: Error) {
          NSLog("wuplyer TCP---- tun2sock 断开连接 链接错误:\(err)")
-//        self.close(with: "Local: \(err)")
+        self.close(with: "Local: \(err)")
     }
     
 }
@@ -122,13 +122,13 @@ extension TCPConnection: GCDAsyncSocketDelegate {
         
         let str = String.init(data: data, encoding: .utf8)
         NSLog("wuplyer TCP---- TCP接受远程的数据:\(str ?? "")")
-//        self.local.write(data)
+        self.local.write(data)
         
         self.remote.readData(withTimeout: -1, tag: tag)
     }
     
     func socket(_ sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
-//        self.local.readData()
+        self.local.readData()
         self.remote.readData(withTimeout: -1, tag: tag)
     }
     
