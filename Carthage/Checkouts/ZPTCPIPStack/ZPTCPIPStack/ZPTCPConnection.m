@@ -347,6 +347,7 @@ void zp_tcp_err(void *arg, err_t err)
         if (pcb == NULL || _block->close_after_writing) {
             return;
         }
+//        let err = tcp_write(pcb, (data as NSData).bytes, UInt16(data.count), UInt8(TCP_WRITE_FLAG_COPY))
         err_t err = tcp_write(pcb, data.bytes, data.length, TCP_WRITE_FLAG_COPY);
         if (err == ERR_OK) {
             tcp_output(pcb, _block);

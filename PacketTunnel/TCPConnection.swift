@@ -39,22 +39,7 @@ class TCPConnection: NSObject {
             return nil
         }
         self.remote.synchronouslySetDelegate( self, delegateQueue: queue)
-        
-        /* session */
-        self.sessionModel.date = Date().timeIntervalSince1970
-        self.sessionModel.method = "TCP"
-        self.sessionModel.localIP = self.local.srcAddr
-        self.sessionModel.localPort = Int(self.local.srcPort)
-        self.sessionModel.remoteIP = self.local.destAddr
-        self.sessionModel.remotePort = Int(self.local.destPort)
-        self.sessionModel.url = "\(self.local.destAddr):\(self.local.destPort)"
-        /* session status */
-        self.sessionModel.status = .connect
-        self.addSessionToManager()
-        
         do {
-            
-//             NSLog("wuplyer TCP---- 远程开始连接，目标ip：\(self.local.destAddr),目标端口:\(self.local.destPort)")
             try self.remote.connect(toHost: self.local.destAddr,onPort: self.local.destPort)
         } catch {
             self.close(with: "\(error)")
@@ -83,19 +68,9 @@ class TCPConnection: NSObject {
         /* close connection */
         self.local.closeAfterWriting()
         self.remote.disconnectAfterWriting()
-    
         self.server?.remove(connection: self)
     }
     
-    func addSessionToManager() {
-        guard !self.didAddSessionToManager else {
-            return
-        }
-        self.didAddSessionToManager = true
-        if !self.didClose {
-            SessionManager.shared.activeAppend(self.sessionModel)
-        }
-    }
     
 }
 
@@ -108,16 +83,16 @@ extension TCPConnection: ZPTCPConnectionDelegate {
         }
         //远程soc
         self.remote.write(data, withTimeout: 5, tag: self.index)
-        
     }
     
     func connection(_ connection: ZPTCPConnection, didWriteData length: UInt16, sendBuf isEmpty: Bool) {
         
-        NSLog("wuplyer TCP---- 将数据写入应用之后")
-        
         if isEmpty {
+             NSLog("wuplyer TCP---- 将数据全部写入应用")
             self.remote.readData(withTimeout: -1, tag: self.index)
-//            self.remote.readData(withTimeout: -1, buffer: nil, bufferOffset: 0, maxLength: UInt(UINT16_MAX / 2), tag: 0)
+        }else{
+             NSLog("wuplyer TCP---- 缓冲区中存在发送数据以等待确认或重新发送")
+//            self.local.write(<#T##data: Data##Data#>)
         }
     }
     
@@ -138,7 +113,6 @@ extension TCPConnection: ZPTCPConnectionDelegate {
 extension TCPConnection: GCDAsyncSocketDelegate {
     
     func socket(_ sock: GCDAsyncSocket, didConnectToHost host: String, port: UInt16) {
-        /* session status */
         self.local.readData()
         self.remote.readData(withTimeout: -1, tag: self.index)
 //        self.remote.readData(withTimeout: -1, buffer: nil, bufferOffset: 0, maxLength: UInt(UINT16_MAX / 2), tag: 0)
@@ -148,14 +122,13 @@ extension TCPConnection: GCDAsyncSocketDelegate {
         
         let str = String.init(data: data, encoding: .utf8)
         NSLog("wuplyer TCP---- TCP接受远程的数据:\(str ?? "")")
-        
-        self.local.write(data)
+//        self.local.write(data)
         
         self.remote.readData(withTimeout: -1, tag: tag)
     }
     
     func socket(_ sock: GCDAsyncSocket, didWriteDataWithTag tag: Int) {
-        self.local.readData()
+//        self.local.readData()
         self.remote.readData(withTimeout: -1, tag: tag)
     }
     
